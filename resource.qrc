@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/imj">
+        <file>img/DollarLogo.png</file>
+    </qresource>
+</RCC>
