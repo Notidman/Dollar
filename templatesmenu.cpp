@@ -92,6 +92,7 @@ void TemplatesMenu::on_pb_rename_file_clicked()
     file_dialog = new DialogNameNew(this);
 
     connect(static_cast<DialogNameNew*>(file_dialog), &DialogNameNew::name_item, this, &TemplatesMenu::name_item);
+    file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
     file_dialog->show();
   }
 }
