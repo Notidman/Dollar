@@ -15,6 +15,7 @@ SOURCES += \
     dialognamenew.cpp \
     dialogselecttemplate.cpp \
     filegenerator.cpp \
+    jsonparser.cpp \
     main.cpp \
     mainwindow.cpp \
     projectsmenu.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     dialognamenew.h \
     dialogselecttemplate.h \
     filegenerator.h \
+    jsonparser.h \
     mainwindow.h \
     projectsmenu.h \
     settingsmenu.h \
