@@ -82,14 +82,15 @@ void TemplatesMenu::on_pb_delete_clicked()
 
 void TemplatesMenu::on_pb_rename_file_clicked()
 {
-  if( ui->treeW_project_struct->selectedItems().isEmpty())
+  auto items = ui->treeW_project_struct->selectedItems();
+  if( items.isEmpty())
   {
     /// Message box error select item
     QMessageBox::critical(this, "Error", "Select file!");
   }
   else
   {
-    file_dialog = new DialogNameNew(this);
+    file_dialog = new DialogNameNew(this, items.at(0)->text(0).mid(3));
 
     connect(static_cast<DialogNameNew*>(file_dialog), &DialogNameNew::name_item, this, &TemplatesMenu::name_item);
     file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
