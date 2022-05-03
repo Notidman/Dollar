@@ -50,8 +50,8 @@ void TemplatesMenu::on_pb_reset_clicked()
 void TemplatesMenu::on_pb_create_dir_clicked()
 {
   file_dialog = new DialogNameDir(this);
-
   connect(static_cast<DialogNameDir*>(file_dialog), &DialogNameDir::name_item, this, &TemplatesMenu::name_item);
+  file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
   file_dialog->show();
 }
 
@@ -61,6 +61,7 @@ void TemplatesMenu::on_pb_create_file_clicked()
   file_dialog = new DialogNameFile(this);
 
   connect(static_cast<DialogNameFile*>(file_dialog), &DialogNameFile::name_item, this, &TemplatesMenu::name_item);
+  file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
   file_dialog->show();
 }
 
