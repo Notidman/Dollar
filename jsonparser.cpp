@@ -4,6 +4,13 @@ JsonParser::JsonParser()
 {
 }
 
+QJsonObject JsonParser::create_json(QMap<QString, QString> project_struct)
+{
+
+}
+
+
+
 /*
 {
   "name": "Dollar",
