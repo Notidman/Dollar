@@ -12,7 +12,7 @@ class DialogNameNew : public QDialog
   Q_OBJECT
 
 public:
-  explicit DialogNameNew(QWidget *parent = nullptr);
+  explicit DialogNameNew(QWidget *parent = nullptr, QString old_name = "old name");
   ~DialogNameNew();
 
 private slots:
