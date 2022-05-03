@@ -1,5 +1,6 @@
 #include "dialognamenew.h"
 #include "ui_dialognamenew.h"
+#include <QMessageBox>
 
 DialogNameNew::DialogNameNew(QWidget *parent, QString old_name) :
   QDialog(parent),
@@ -16,6 +17,11 @@ DialogNameNew::~DialogNameNew()
 
 void DialogNameNew::on_buttonBox_accepted()
 {
-  emit name_item(ui->lineEdit->text());
+  if( ui->lineEdit->text() != "" )
+    emit name_item(ui->lineEdit->text());
+  else
+  {
+    QMessageBox::critical(this, "Error", "The file cannot be without a name!");
+  }
 }
 

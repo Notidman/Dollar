@@ -3,9 +3,7 @@
 
 #include <QJsonObject>
 #include <QMap>
-#include <Qstring>
-
-
+#include <QString>
 
 class JsonParser
 {

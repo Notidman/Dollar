@@ -1,4 +1,5 @@
 #include "dialognamedir.h"
+#include <QMessageBox>
 #include "ui_dialognamedir.h"
 
 DialogNameDir::DialogNameDir(QWidget *parent) :
@@ -15,6 +16,11 @@ DialogNameDir::~DialogNameDir()
 
 void DialogNameDir::on_buttonBox_accepted()
 {
-  emit name_item("d: " + ui->lineEdit->text());
+  if( ui->lineEdit->text() != "" )
+    emit name_item("d: " + ui->lineEdit->text());
+  else
+  {
+    QMessageBox::critical(this, "Error", "The file cannot be without a name!");
+  }
 }
 
