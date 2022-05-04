@@ -17,11 +17,12 @@ DialogNameNew::~DialogNameNew()
 
 void DialogNameNew::on_buttonBox_accepted()
 {
-  if( ui->lineEdit->text() != "" )
-    emit name_item(ui->lineEdit->text());
-  else
+  if( ui->lineEdit->text() == "" )
   {
     QMessageBox::critical(this, "Error", "The file cannot be without a name!");
+    return;
   }
+
+  emit name_item(ui->lineEdit->text());
 }
 

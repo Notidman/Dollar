@@ -16,11 +16,12 @@ DialogNameDir::~DialogNameDir()
 
 void DialogNameDir::on_buttonBox_accepted()
 {
-  if( ui->lineEdit->text() != "" )
-    emit name_item("d: " + ui->lineEdit->text());
-  else
+  if( ui->lineEdit->text() == "" )
   {
     QMessageBox::critical(this, "Error", "The file cannot be without a name!");
+    return;
   }
+
+  emit name_item("d: " + ui->lineEdit->text());
 }
 

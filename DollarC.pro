@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     projectsmenu.cpp \
+    projectstructfilewriter.cpp \
     settingsmenu.cpp \
     templatesmenu.cpp \
     welcomemenu.cpp
@@ -33,6 +34,7 @@ HEADERS += \
     jsonparser.h \
     mainwindow.h \
     projectsmenu.h \
+    projectstructfilewriter.h \
     settingsmenu.h \
     templatesmenu.h \
     welcomemenu.h
