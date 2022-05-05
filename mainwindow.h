@@ -2,8 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <memory>
 #include <QMdiArea>
+
+#include "templatesmenu.h"
+#include "settingsmenu.h"
+#include "projectsmenu.h"
+#include "welcomemenu.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,23 +20,7 @@ class MainWindow : public QMainWindow
 public:
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
-
-signals:
-  void sg_create_menu(QWidget* menu);
-
-private slots:
-  void on_pb_templates_clicked();
-
-  void on_pb_projects_clicked();
-
-  void on_pb_settings_clicked();
-
-  void on_pushButton_clicked();
-
 private:
-  void create_menu(QWidget* menu);
-
   Ui::MainWindow* ui;
-  QWidget* menu_controller;
 };
 #endif // MAINWINDOW_H

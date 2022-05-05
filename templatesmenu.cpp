@@ -34,12 +34,9 @@ void TemplatesMenu::on_pb_reset_clicked()
 
     // Set none comboBox
     ui->comb_build_system->setCurrentIndex(0);
-    ui->comb_control_system->setCurrentIndex(0);
 
     // Clear txt lineEdit
     ui->le_name_template->clear();
-    ui->le_project_lang->clear();
-    ui->le_project_tag->clear();
 
     // Clear file-tree
     ui->treeW_project_struct->clear();

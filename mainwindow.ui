@@ -10,6 +10,12 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="font">
    <font>
     <family>Hack</family>
@@ -18,159 +24,86 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QGroupBox" name="gb_menu">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="font">
-       <font>
-        <family>Hack</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+      <property name="styleSheet">
+       <string notr="true">/*padding: 0 13px;
+margin: 0 15px 15px 0;
+outline: none;
+border: 1px solid transparent;  
+border-radius: 3px;
+height: 32px;
+line-height: 32px;
+font-size: 14px;
+font-weight: 500;
+text-decoration: none;*/
+/*color: #fff;*/
+/*background-color: #65a3be;*/</string>
       </property>
-      <property name="title">
-       <string>Menu:</string>
+      <property name="tabPosition">
+       <enum>QTabWidget::South</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="pb_projects">
-         <property name="font">
-          <font>
-           <family>Hack</family>
-           <pointsize>-1</pointsize>
-           <weight>63</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">padding: 0 13px;
-margin: 0 15px 15px 0;
-outline: none;
-border: 1px solid transparent;  
-border-radius: 3px;
-height: 32px;
-line-height: 32px;
-font-size: 14px;
-font-weight: 500;
-text-decoration: none;
-color: #fff;
-background-color: #65a3be;</string>
-         </property>
-         <property name="text">
-          <string>Projects</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pb_templates">
-         <property name="font">
-          <font>
-           <family>Hack</family>
-           <pointsize>-1</pointsize>
-           <weight>63</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">padding: 0 13px;
-margin: 0 15px 15px 0;
-outline: none;
-border: 1px solid transparent;  
-border-radius: 3px;
-height: 32px;
-line-height: 32px;
-font-size: 14px;
-font-weight: 500;
-text-decoration: none;
-color: #fff;
-background-color: #65a3be;</string>
-         </property>
-         <property name="text">
-          <string>Templates</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="styleSheet">
-          <string notr="true">padding: 0 13px;
-margin: 0 15px 15px 0;
-outline: none;
-border: 1px solid transparent;  
-border-radius: 3px;
-height: 32px;
-line-height: 32px;
-font-size: 14px;
-font-weight: 500;
-text-decoration: none;
-color: #fff;
-background-color: #65a3be;</string>
-         </property>
-         <property name="text">
-          <string>Network</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pb_settings">
-         <property name="font">
-          <font>
-           <family>Hack</family>
-           <pointsize>-1</pointsize>
-           <weight>63</weight>
-           <bold>true</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">padding: 0 13px;
-margin: 0 15px 15px 0;
-outline: none;
-border: 1px solid transparent;  
-border-radius: 3px;
-height: 32px;
-line-height: 32px;
-font-size: 14px;
-font-weight: 500;
-text-decoration: none;
-color: #fff;
-background-color: #65a3be;</string>
-         </property>
-         <property name="text">
-          <string>Settings</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_git">
+       <attribute name="title">
+        <string>Git</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gl_git_menu"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_projects">
+       <attribute name="title">
+        <string>Projects</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gl_projects_menu"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_templates">
+       <attribute name="title">
+        <string>Templates</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gl_templates_menu"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_settings">
+       <attribute name="title">
+        <string>Settings</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gl_settings_menu"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="menu_panel"/>
     </item>
    </layout>
   </widget>

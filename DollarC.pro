@@ -9,12 +9,10 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    clientmenu.cpp \
     dialognamedir.cpp \
     dialognamefile.cpp \
     dialognamenew.cpp \
     dialogselecttemplate.cpp \
-    jsonparser.cpp \
     main.cpp \
     mainwindow.cpp \
     projectsmenu.cpp \
@@ -24,12 +22,10 @@ SOURCES += \
     welcomemenu.cpp
 
 HEADERS += \
-    clientmenu.h \
     dialognamedir.h \
     dialognamefile.h \
     dialognamenew.h \
     dialogselecttemplate.h \
-    jsonparser.h \
     mainwindow.h \
     projectsmenu.h \
     projectstructfilewriter.h \
@@ -38,7 +34,6 @@ HEADERS += \
     welcomemenu.h
 
 FORMS += \
-    clientmenu.ui \
     dialognamedir.ui \
     dialognamefile.ui \
     dialognamenew.ui \

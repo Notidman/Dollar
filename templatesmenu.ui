@@ -24,7 +24,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_creation">
       <attribute name="title">
@@ -85,71 +85,15 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="le_project_lang">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="hl_project_tag">
-           <item>
-            <widget class="QLabel" name="lb_project_tag">
-             <property name="text">
-              <string>Project tag:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="le_project_tag">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="hl_control_system">
-           <item>
-            <widget class="QLabel" name="lb_control_system">
-             <property name="text">
-              <string>Control system:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comb_control_system">
+            <widget class="QComboBox" name="comb_project_language">
              <item>
               <property name="text">
-               <string>None</string>
+               <string>C++</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Git</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>SVN</string>
+               <string>PHP</string>
               </property>
              </item>
             </widget>
