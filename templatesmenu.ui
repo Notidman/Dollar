@@ -23,8 +23,11 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::West</enum>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_creation">
       <attribute name="title">
@@ -88,6 +91,11 @@
             <widget class="QComboBox" name="comb_project_language">
              <item>
               <property name="text">
+               <string>None</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
                <string>C++</string>
               </property>
              </item>
@@ -101,109 +109,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="hl_build_system">
-           <item>
-            <widget class="QLabel" name="lb_build_system">
-             <property name="text">
-              <string>Build system:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comb_build_system">
-             <item>
-              <property name="text">
-               <string>None</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Make</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>CMake</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Bazel</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="hl_list_libs">
-           <item>
-            <widget class="QLabel" name="lb_list_libs">
-             <property name="text">
-              <string>List of libraries:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QScrollArea" name="scrollArea_libs">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>216</width>
-                <height>120</height>
-               </rect>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <widget class="QCheckBox" name="checkBox_Qt">
-                 <property name="text">
-                  <string>Qt</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBox_SFML">
-                 <property name="text">
-                  <string>SFML</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBox_SDL">
-                 <property name="text">
-                  <string>SDL</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBox_OpenCV">
-                 <property name="text">
-                  <string>OpenCV</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QGridLayout" name="gridLayout_language_form"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -366,7 +272,7 @@ background-color: green;</string>
          <item>
           <widget class="QLabel" name="lb_path_templates">
            <property name="text">
-            <string>templates</string>
+            <string>default</string>
            </property>
           </widget>
          </item>

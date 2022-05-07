@@ -13,6 +13,9 @@ SOURCES += \
     dialognamefile.cpp \
     dialognamenew.cpp \
     dialogselecttemplate.cpp \
+    formcpplanguage.cpp \
+    formphplanguage.cpp \
+    gitmenu.cpp \
     main.cpp \
     mainwindow.cpp \
     projectsmenu.cpp \
@@ -26,6 +29,9 @@ HEADERS += \
     dialognamefile.h \
     dialognamenew.h \
     dialogselecttemplate.h \
+    formcpplanguage.h \
+    formphplanguage.h \
+    gitmenu.h \
     mainwindow.h \
     projectsmenu.h \
     projectstructfilewriter.h \
@@ -38,6 +44,9 @@ FORMS += \
     dialognamefile.ui \
     dialognamenew.ui \
     dialogselecttemplate.ui \
+    formcpplanguage.ui \
+    formphplanguage.ui \
+    gitmenu.ui \
     mainwindow.ui \
     projectsmenu.ui \
     settingsmenu.ui \

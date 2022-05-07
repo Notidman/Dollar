@@ -33,11 +33,14 @@ private slots:
 
   void on_pb_set_defauilt_path_clicked();
 
+  void on_comb_project_language_activated(const QString &arg1);
+
 private:
   void create_item_in_tree(QString str);
 
 private:
   QDialog* file_dialog;
+  std::unique_ptr<QWidget> language_form;
   Ui::TemplatesMenu *ui;
 };
 

@@ -3,10 +3,13 @@
 #include "dialognamedir.h"
 #include "dialognamefile.h"
 #include "dialognamenew.h"
+#include "formphplanguage.h"
+#include "formcpplanguage.h"
 
 #include <QFileDialog>
 #include <QDebug>
 #include <QMessageBox>
+#include <unordered_map>
 
 TemplatesMenu::TemplatesMenu(QWidget *parent) :
   QWidget(parent),
@@ -26,14 +29,8 @@ void TemplatesMenu::on_pb_reset_clicked()
                                                            QMessageBox::Yes | QMessageBox::No);
   if ( reply == QMessageBox::Yes)
   {
-    // Clear list libs
-    ui->checkBox_OpenCV->setCheckState(Qt::CheckState::Unchecked);
-    ui->checkBox_Qt->setCheckState(Qt::CheckState::Unchecked);
-    ui->checkBox_SDL->setCheckState(Qt::CheckState::Unchecked);
-    ui->checkBox_SFML->setCheckState(Qt::CheckState::Unchecked);
-
     // Set none comboBox
-    ui->comb_build_system->setCurrentIndex(0);
+    ui->comb_project_language->setCurrentIndex(0);
 
     // Clear txt lineEdit
     ui->le_name_template->clear();
@@ -48,7 +45,6 @@ void TemplatesMenu::on_pb_create_dir_clicked()
 {
   file_dialog = new DialogNameDir(this);
   connect(static_cast<DialogNameDir*>(file_dialog), &DialogNameDir::name_item, this, &TemplatesMenu::name_item);
-  file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
   file_dialog->show();
 }
 
@@ -58,7 +54,6 @@ void TemplatesMenu::on_pb_create_file_clicked()
   file_dialog = new DialogNameFile(this);
 
   connect(static_cast<DialogNameFile*>(file_dialog), &DialogNameFile::name_item, this, &TemplatesMenu::name_item);
-  file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
   file_dialog->show();
 }
 
@@ -90,7 +85,6 @@ void TemplatesMenu::on_pb_rename_file_clicked()
     file_dialog = new DialogNameNew(this, items.at(0)->text(0).mid(3));
 
     connect(static_cast<DialogNameNew*>(file_dialog), &DialogNameNew::name_item, this, &TemplatesMenu::name_item);
-    file_dialog->setWindowModality(Qt::WindowModality::ApplicationModal);
     file_dialog->show();
   }
 }
@@ -148,5 +142,19 @@ void TemplatesMenu::create_item_in_tree(QString str)
 void TemplatesMenu::on_pb_set_defauilt_path_clicked()
 {
 
+}
+
+void TemplatesMenu::on_comb_project_language_activated(const QString &arg1)
+{
+  if ( !ui->gridLayout_language_form->isEmpty())
+  {
+    language_form.reset();
+  }
+  else
+  {
+    if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
+    if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
+    ui->gridLayout_language_form->addWidget(language_form.get());
+  }
 }
 

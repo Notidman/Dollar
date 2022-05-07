@@ -15,6 +15,12 @@ public:
   explicit SettingsMenu(QWidget *parent = nullptr);
   ~SettingsMenu();
 
+signals:
+  void set_theme(QString);
+
+private slots:
+  void on_comboBox_2_activated(const QString &arg1);
+
 private:
   Ui::SettingsMenu *ui;
 };

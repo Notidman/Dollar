@@ -63,12 +63,12 @@
           <widget class="QComboBox" name="comboBox">
            <item>
             <property name="text">
-             <string>Russian</string>
+             <string>English</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>English</string>
+             <string>Russian</string>
             </property>
            </item>
           </widget>
@@ -109,12 +109,12 @@
           <widget class="QComboBox" name="comboBox_2">
            <item>
             <property name="text">
-             <string>Dark</string>
+             <string>Light</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Light</string>
+             <string>Gray</string>
             </property>
            </item>
           </widget>
