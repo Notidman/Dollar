@@ -27,7 +27,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_creation">
       <attribute name="title">
@@ -135,6 +135,13 @@
               <widget class="QPushButton" name="pb_create_file">
                <property name="text">
                 <string>Create File</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pb_write_in_file">
+               <property name="text">
+                <string>Write in file</string>
                </property>
               </widget>
              </item>

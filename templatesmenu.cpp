@@ -3,6 +3,7 @@
 #include "dialognamedir.h"
 #include "dialognamefile.h"
 #include "dialognamenew.h"
+#include "dialogwriteinfile.h"
 #include "formphplanguage.h"
 #include "formcpplanguage.h"
 
@@ -31,6 +32,7 @@ void TemplatesMenu::on_pb_reset_clicked()
   {
     // Set none comboBox
     ui->comb_project_language->setCurrentIndex(0);
+    language_form.reset();
 
     // Clear txt lineEdit
     ui->le_name_template->clear();
@@ -150,11 +152,20 @@ void TemplatesMenu::on_comb_project_language_activated(const QString &arg1)
   {
     language_form.reset();
   }
-  else
-  {
-    if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
-    if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
-    ui->gridLayout_language_form->addWidget(language_form.get());
-  }
+
+  if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
+  else if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
+  else if ( arg1 == "None") { language_form.reset(); return; }
+
+  ui->gridLayout_language_form->addWidget(language_form.get());
+}
+
+
+void TemplatesMenu::on_pb_confirm_clicked()
+{
+}
+
+void TemplatesMenu::on_pb_write_in_file_clicked()
+{
 }
 

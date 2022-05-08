@@ -9,10 +9,12 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aboutmenu.cpp \
     dialognamedir.cpp \
     dialognamefile.cpp \
     dialognamenew.cpp \
     dialogselecttemplate.cpp \
+    dialogwriteinfile.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
     gitmenu.cpp \
@@ -25,10 +27,12 @@ SOURCES += \
     welcomemenu.cpp
 
 HEADERS += \
+    aboutmenu.h \
     dialognamedir.h \
     dialognamefile.h \
     dialognamenew.h \
     dialogselecttemplate.h \
+    dialogwriteinfile.h \
     formcpplanguage.h \
     formphplanguage.h \
     gitmenu.h \
@@ -40,10 +44,12 @@ HEADERS += \
     welcomemenu.h
 
 FORMS += \
+    aboutmenu.ui \
     dialognamedir.ui \
     dialognamefile.ui \
     dialognamenew.ui \
     dialogselecttemplate.ui \
+    dialogwriteinfile.ui \
     formcpplanguage.ui \
     formphplanguage.ui \
     gitmenu.ui \

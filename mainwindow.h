@@ -9,6 +9,7 @@
 #include "projectsmenu.h"
 #include "gitmenu.h"
 #include "welcomemenu.h"
+#include "aboutmenu.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,5 +32,6 @@ private:
   TemplatesMenu* templates_menu;
   SettingsMenu* settings_menu;
   ProjectsMenu* projects_menu;
+  AboutMenu* about_menu;
 };
 #endif // MAINWINDOW_H

@@ -35,6 +35,10 @@ private slots:
 
   void on_comb_project_language_activated(const QString &arg1);
 
+  void on_pb_confirm_clicked();
+
+  void on_pb_write_in_file_clicked();
+
 private:
   void create_item_in_tree(QString str);
 
