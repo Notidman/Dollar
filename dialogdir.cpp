@@ -8,7 +8,8 @@ DialogDir::DialogDir(QWidget *parent) :
   ui(new Ui::DialogNameDir)
 {
   ui->setupUi(this);
-  ui->lineEdit->setValidator(new QRegExpValidator(QRegExp("\\w"), this));
+  QRegularExpression re("\w");
+  ui->lineEdit->setValidator(new QRegularExpressionValidator(re, this));
 }
 
 DialogDir::~DialogDir()
