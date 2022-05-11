@@ -13,6 +13,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QJsonArray>
+#include <QTreeWidget>
 
 // TODO LIST
 // Create file +
@@ -155,13 +157,25 @@ void TemplatesMenu::create_discription_in_file(const QString& str, QTreeWidgetIt
 {
   auto item = new QTreeWidgetItem(file);
   item->setText(ColumnIndex::Type, list_type_file[TypeFile::Content]);
-  item->setTextAlignment(ColumnIndex::Type, Qt::AlignTop);
+  item->setTextAlignment(ColumnIndex::Type, Qt::Alignop);
   item->setText(ColumnIndex::Name, str);
 }
 
 void TemplatesMenu::on_pb_unselect_clicked()
 {
   ui->treeW_project_struct->clearSelection();
+}
+
+QJsonObject TemplatesMenu::doStuffWithEveryItemInMyTree(QTreeWidgetItem *item, int count)
+{
+  QJsonObject obj;
+  int temp_count = count;
+  qDebug() << item->text(ColumnIndex::Type)  << item->text(ColumnIndex::Name) << count;
+  for( int i = 0; i < item->childCount(); ++i ){
+    count = temp_count;
+    doStuffWithEveryItemInMyTree( item->child(i), ++count);
+  }
+  return obj;
 }
 
 void TemplatesMenu::on_pb_confirm_clicked()
@@ -171,11 +185,22 @@ void TemplatesMenu::on_pb_confirm_clicked()
   QString language = ui->comb_project_language->currentText();
   obj.insert("language", language);
   if (language == "C++"){
-    obj.insert("build_system", language_form->)
+    obj.insert("build_system", static_cast<FormCppLanguage*>(language_form)->build_system());
+    QJsonArray arr;
+    for (auto i: static_cast<FormCppLanguage*>(language_form)->list_libs()){
+      arr.push_back(i);
+    }
+    obj.insert("libraries", arr);
   }
-  else {
-    qDebug() << "php";
+  else if (language == "PHP"){
+    QJsonArray arr;
+    for (auto i: static_cast<FormPhpLanguage*>(language_form)->list_libs()){
+      arr.push_back(i);
+    }
+    obj.insert("libraries", arr);
   }
+  QTreeWidget* tree = ui->treeW_project_struct;
+  doStuffWithEveryItemInMyTree(tree->invisibleRootItem(), 0);
 }
 
 /*
@@ -207,7 +232,8 @@ void TemplatesMenu::on_pb_confirm_clicked()
                 [
                   {
                     "name": "Hi.cpp",
-                    "type": "f"
+                    "type": "f",
+                    "content": "1231 123 123 \n 123"
                   }
                 ]
             }
