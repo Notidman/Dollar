@@ -54,7 +54,7 @@ private:
 
 private:
   QDialog* file_dialog;
-  std::unique_ptr<QWidget> language_form;
+  QWidget* language_form;
   Ui::TemplatesMenu *ui;
 
 private:
