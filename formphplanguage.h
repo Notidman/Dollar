@@ -13,6 +13,7 @@ class FormPhpLanguage : public QWidget
 
 public:
   explicit FormPhpLanguage(QWidget *parent = nullptr);
+  QStringList list_libs();
   ~FormPhpLanguage();
 
 private:

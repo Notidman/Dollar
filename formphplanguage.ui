@@ -47,14 +47,14 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="cb_laravel">
            <property name="text">
             <string>Laravel</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_2">
+          <widget class="QCheckBox" name="cb_symfony">
            <property name="text">
             <string>Symfony</string>
            </property>
