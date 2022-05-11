@@ -9,7 +9,7 @@ DialogDir::DialogDir(QWidget *parent) :
   ui(new Ui::DialogNameDir)
 {
   ui->setupUi(this);
-  QRegularExpression re("\w");
+  QRegularExpression re("\\w{15}");
   ui->lineEdit->setValidator(new QRegularExpressionValidator(re, this));
 }
 

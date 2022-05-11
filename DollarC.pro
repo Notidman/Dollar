@@ -12,7 +12,6 @@ SOURCES += \
     aboutmenu.cpp \
     dialogdir.cpp \
     dialogfile.cpp \
-    dialognamenew.cpp \
     dialogselecttemplate.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
@@ -29,7 +28,6 @@ HEADERS += \
     aboutmenu.h \
     dialogdir.h \
     dialogfile.h \
-    dialognamenew.h \
     dialogselecttemplate.h \
     formcpplanguage.h \
     formphplanguage.h \
@@ -45,7 +43,6 @@ FORMS += \
     aboutmenu.ui \
     dialogdir.ui \
     dialogfile.ui \
-    dialognamenew.ui \
     dialogselecttemplate.ui \
     formcpplanguage.ui \
     formphplanguage.ui \

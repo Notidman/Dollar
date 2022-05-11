@@ -2,7 +2,6 @@
 #include "ui_templatesmenu.h"
 #include "dialogdir.h"
 #include "dialogfile.h"
-#include "dialognamenew.h"
 #include "dialogfile.h"
 #include "formphplanguage.h"
 #include "formcpplanguage.h"
@@ -14,7 +13,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
-
 
 // TODO LIST
 // Create file +
@@ -33,6 +31,8 @@ TemplatesMenu::TemplatesMenu(QWidget *parent) :
   ui(new Ui::TemplatesMenu)
 {
   ui->setupUi(this);
+  QRegularExpression re("\\w{15}");
+  ui->le_name_template->setValidator(new QRegularExpressionValidator(re, this));
 }
 
 TemplatesMenu::~TemplatesMenu()

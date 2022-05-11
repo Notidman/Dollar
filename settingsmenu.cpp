@@ -13,8 +13,7 @@ SettingsMenu::~SettingsMenu()
   delete ui;
 }
 
-
-void SettingsMenu::on_comboBox_2_activated(const QString &arg1)
+void SettingsMenu::on_comboBox_2_textActivated(const QString &arg1)
 {
   emit set_theme(arg1);
 }

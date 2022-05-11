@@ -19,7 +19,7 @@ signals:
   void set_theme(const QString& str);
 
 private slots:
-  void on_comboBox_2_activated(const QString &arg1);
+  void on_comboBox_2_textActivated(const QString &arg1);
 
 private:
   Ui::SettingsMenu *ui;
