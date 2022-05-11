@@ -24,7 +24,7 @@ public:
   ~MainWindow();
 
 public slots:
-  void set_theme(QString name_theme);
+  void set_theme(const QString& name_theme);
 
 private:
   Ui::MainWindow* ui;

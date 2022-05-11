@@ -115,12 +115,26 @@
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
             <widget class="QTreeWidget" name="treeW_project_struct">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
              <column>
               <property name="text">
-               <string>Project struct:</string>
+               <string>Type</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>File name</string>
               </property>
              </column>
             </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3"/>
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -139,13 +153,6 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pb_write_in_file">
-               <property name="text">
-                <string>Write in file</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="pb_unselect">
                <property name="text">
                 <string>Unselect</string>
@@ -153,9 +160,9 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pb_rename_file">
+              <widget class="QPushButton" name="pb_rewrite_file">
                <property name="text">
-                <string>Rename</string>
+                <string>Rewrite</string>
                </property>
               </widget>
              </item>
@@ -256,51 +263,34 @@ background-color: green;</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_control">
+     <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Control</string>
+       <string>Edit</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="label">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
            <property name="text">
-            <string>Path:</string>
+            <string>Select template:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="lb_path_templates">
+          <widget class="QPushButton" name="pb_select_template">
            <property name="text">
-            <string>default</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pb_set_defauilt_path">
-           <property name="text">
-            <string>Set default path</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pb_select_path">
-           <property name="text">
-            <string>select path</string>
+            <string>Select</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
-       <item>
-        <widget class="QTableView" name="tableView"/>
+       <item row="1" column="0">
+        <layout class="QGridLayout" name="gridLayout_select_template"/>
        </item>
       </layout>
      </widget>

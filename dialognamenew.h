@@ -19,7 +19,7 @@ private slots:
   void on_buttonBox_accepted();
 
 signals:
-  void name_item(QString str);
+  void info_dialog(const QString& str);
 
 private:
   Ui::DialogNameNew *ui;

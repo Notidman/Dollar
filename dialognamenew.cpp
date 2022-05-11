@@ -23,6 +23,6 @@ void DialogNameNew::on_buttonBox_accepted()
     return;
   }
 
-  emit name_item(ui->lineEdit->text());
+  emit info_dialog(ui->lineEdit->text());
 }
 

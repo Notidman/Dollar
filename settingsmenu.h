@@ -16,7 +16,7 @@ public:
   ~SettingsMenu();
 
 signals:
-  void set_theme(QString);
+  void set_theme(const QString& str);
 
 private slots:
   void on_comboBox_2_activated(const QString &arg1);

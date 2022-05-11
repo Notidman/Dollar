@@ -31,7 +31,7 @@ MainWindow::~MainWindow()
   delete about_menu;
 }
 
-void MainWindow::set_theme(QString name_theme)
+void MainWindow::set_theme(const QString& name_theme)
 {
   if ( name_theme == "Gray")
   {

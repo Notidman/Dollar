@@ -10,11 +10,10 @@ CONFIG += c++17
 
 SOURCES += \
     aboutmenu.cpp \
-    dialognamedir.cpp \
-    dialognamefile.cpp \
+    dialogdir.cpp \
+    dialogfile.cpp \
     dialognamenew.cpp \
     dialogselecttemplate.cpp \
-    dialogwriteinfile.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
     gitmenu.cpp \
@@ -28,11 +27,10 @@ SOURCES += \
 
 HEADERS += \
     aboutmenu.h \
-    dialognamedir.h \
-    dialognamefile.h \
+    dialogdir.h \
+    dialogfile.h \
     dialognamenew.h \
     dialogselecttemplate.h \
-    dialogwriteinfile.h \
     formcpplanguage.h \
     formphplanguage.h \
     gitmenu.h \
@@ -45,13 +43,13 @@ HEADERS += \
 
 FORMS += \
     aboutmenu.ui \
-    dialognamedir.ui \
-    dialognamefile.ui \
+    dialogdir.ui \
+    dialogfile.ui \
     dialognamenew.ui \
     dialogselecttemplate.ui \
-    dialogwriteinfile.ui \
     formcpplanguage.ui \
     formphplanguage.ui \
+    formtemplate.ui \
     gitmenu.ui \
     mainwindow.ui \
     projectsmenu.ui \

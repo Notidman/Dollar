@@ -66,11 +66,6 @@
              <string>English</string>
             </property>
            </item>
-           <item>
-            <property name="text">
-             <string>Russian</string>
-            </property>
-           </item>
           </widget>
          </item>
         </layout>
