@@ -1,7 +1,8 @@
 #include "dialogdir.h"
 #include "ui_dialogdir.h"
 #include <QMessageBox>
-#include <QRegExpValidator>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 DialogDir::DialogDir(QWidget *parent) :
   QDialog(parent),

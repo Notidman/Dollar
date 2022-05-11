@@ -11,6 +11,9 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <unordered_map>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 
 
 // TODO LIST
@@ -163,7 +166,62 @@ void TemplatesMenu::on_pb_unselect_clicked()
 
 void TemplatesMenu::on_pb_confirm_clicked()
 {
+  QJsonObject obj;
+  obj.insert("name", ui->le_name_template->text());
+  QString language = ui->comb_project_language->currentText();
+  obj.insert("language", language);
+  if (language == "C++"){
+    obj.insert("build_system", language_form->)
+  }
+  else {
+    qDebug() << "php";
+  }
 }
+
+/*
+{
+  "name": "Dollar",
+  "language": "C++",
+  "build_system": "CMake",
+  "libraries":
+    [
+    "Qt",
+    "SFML"
+    ]
+  "struct":
+    [
+      {
+        "name": "Hello",
+        "type": "d",
+        "children": []
+      },
+      {
+        "name": "Hello2",
+        "type": "d",
+        "children":
+          [
+            {
+              "name": "Arividerci",
+              "type": "d",
+              "children":
+                [
+                  {
+                    "name": "Hi.cpp",
+                    "type": "f"
+                  }
+                ]
+            }
+          ]
+      },
+      {
+        "name": "Adios",
+        "type": "d",
+        "children": []
+      }
+    ]
+}
+*/
+
 
 //void TemplatesMenu::on_pb_write_in_file_clicked()
 //{
