@@ -43,6 +43,7 @@ signals:
   void file_content(const QString& str);
 
 private:
+  QJsonObject doStuffWithEveryItemInMyTree(QTreeWidgetItem *item, int count);
   void create_dir_in_tree(const QString& str);
   void create_file_in_tree(const QStringList& str);
   void create_discription_in_file(const QString& str, QTreeWidgetItem *file);
