@@ -6,6 +6,8 @@ ProjectsMenu::ProjectsMenu(QWidget *parent) :
   ui(new Ui::ProjectsMenu)
 {
   ui->setupUi(this);
+  QRegularExpression re("\\w{15}");
+  ui->lEdit_project_name->setValidator(new QRegularExpressionValidator(re, this));
 }
 
 ProjectsMenu::~ProjectsMenu()

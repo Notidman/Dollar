@@ -45,7 +45,7 @@ void TemplatesMenu::on_pb_reset_clicked()
   {
     // Set none comboBox
     ui->comb_project_language->setCurrentIndex(0);
-    language_form.reset();
+    delete language_form;
 
     // Clear txt lineEdit
     ui->le_name_template->clear();
@@ -254,13 +254,13 @@ void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
 {
   if ( !ui->gridLayout_language_form->isEmpty())
   {
-    language_form.reset();
+    delete language_form;
   }
 
-  if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
-  else if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
-  else if ( arg1 == "None") { language_form.reset(); return; }
+  if ( arg1 == "C++" ) { language_form = new FormCppLanguage(); }
+  else if ( arg1 == "PHP" ) { language_form = new FormPhpLanguage(); }
+  else if ( arg1 == "None") { delete language_form; return; }
 
-  ui->gridLayout_language_form->addWidget(language_form.get());
+  ui->gridLayout_language_form->addWidget(language_form);
 }
 
