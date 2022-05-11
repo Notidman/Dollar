@@ -1,11 +1,15 @@
 #include "dialogfile.h"
 #include "ui_dialogfile.h"
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 DialogFile::DialogFile(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::DialogNameFile)
 {
   ui->setupUi(this);
+  QRegularExpression re("\\w{15}");
+  ui->lineEdit->setValidator(new QRegularExpressionValidator(re, this));
 }
 
 DialogFile::~DialogFile()

@@ -1,14 +1,15 @@
 #include "dialogdir.h"
 #include "ui_dialogdir.h"
 #include <QMessageBox>
-#include <QRegExpValidator>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 DialogDir::DialogDir(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::DialogNameDir)
 {
   ui->setupUi(this);
-  QRegularExpression re("\w");
+  QRegularExpression re("\\w{15}");
   ui->lineEdit->setValidator(new QRegularExpressionValidator(re, this));
 }
 
