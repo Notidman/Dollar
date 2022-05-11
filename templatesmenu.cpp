@@ -75,7 +75,8 @@ void TemplatesMenu::on_pb_create_file_clicked()
 
 void TemplatesMenu::on_pb_delete_clicked()
 {
-  if(check_select_in_tree())
+  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::Dir] or
+       ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::File])
   {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Question", "Are you sure?",
                                                              QMessageBox::Yes | QMessageBox::No);
@@ -83,6 +84,10 @@ void TemplatesMenu::on_pb_delete_clicked()
     {
       delete ui->treeW_project_struct->selectedItems().at(0);
     }
+  }
+  else
+  {
+    QMessageBox::critical(this, "Error", "Select file or dir!");
   }
 }
 
@@ -155,21 +160,6 @@ void TemplatesMenu::on_pb_unselect_clicked()
 {
   ui->treeW_project_struct->clearSelection();
 }
-
-void TemplatesMenu::on_comb_project_language_activated(const QString &arg1)
-{
-  if ( !ui->gridLayout_language_form->isEmpty())
-  {
-    language_form.reset();
-  }
-
-  if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
-  else if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
-  else if ( arg1 == "None") { language_form.reset(); return; }
-
-  ui->gridLayout_language_form->addWidget(language_form.get());
-}
-
 
 void TemplatesMenu::on_pb_confirm_clicked()
 {
@@ -257,5 +247,20 @@ void TemplatesMenu::on_pb_rewrite_file_clicked()
       QMessageBox::critical(this, "Error", "This can't be rewrite");
     }
   }
+}
+
+
+void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
+{
+  if ( !ui->gridLayout_language_form->isEmpty())
+  {
+    language_form.reset();
+  }
+
+  if ( arg1 == "C++" ) { language_form = std::make_unique<FormCppLanguage>(); }
+  else if ( arg1 == "PHP" ) { language_form = std::make_unique<FormPhpLanguage>(); }
+  else if ( arg1 == "None") { language_form.reset(); return; }
+
+  ui->gridLayout_language_form->addWidget(language_form.get());
 }
 

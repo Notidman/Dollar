@@ -1,12 +1,14 @@
 #include "dialogdir.h"
 #include "ui_dialogdir.h"
 #include <QMessageBox>
+#include <QRegExpValidator>
 
 DialogDir::DialogDir(QWidget *parent) :
   QDialog(parent),
   ui(new Ui::DialogNameDir)
 {
   ui->setupUi(this);
+  ui->lineEdit->setValidator(new QRegExpValidator(QRegExp("\\w"), this));
 }
 
 DialogDir::~DialogDir()
