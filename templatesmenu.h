@@ -66,9 +66,9 @@ private:
   };
 
   const QMap<TypeFile, QString> list_type_file{{
-      {TypeFile::Dir, "Dir: "},
-      {TypeFile::File, "File: "},
-      {TypeFile::Content, "Content: "}
+      {TypeFile::Dir, "Dir:"},
+      {TypeFile::File, "File:"},
+      {TypeFile::Content, "Content:"}
   }};
 
   enum ColumnIndex

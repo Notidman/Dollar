@@ -84,14 +84,14 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="pb_add_template">
                <property name="text">
                 <string>Add template</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_5">
+              <widget class="QPushButton" name="pb_remove_template">
                <property name="text">
                 <string>Remove template</string>
                </property>
@@ -132,7 +132,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="pb_reset">
            <property name="styleSheet">
             <string notr="true">padding: 0 13px;
 outline: none;
@@ -152,7 +152,7 @@ background-color: red;</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="pb_create">
            <property name="styleSheet">
             <string notr="true">padding: 0 13px;
 outline: none;
@@ -167,7 +167,7 @@ color: #fff;
 background-color: green;</string>
            </property>
            <property name="text">
-            <string>Accept</string>
+            <string>Create</string>
            </property>
           </widget>
          </item>
@@ -177,7 +177,7 @@ background-color: green;</string>
      </widget>
      <widget class="QWidget" name="projects_control">
       <attribute name="title">
-       <string>Control</string>
+       <string>Edit</string>
       </attribute>
      </widget>
     </widget>

@@ -10,7 +10,7 @@ FormCppLanguage::FormCppLanguage(QWidget *parent) :
 
 QString FormCppLanguage::build_system()
 {
-  return ui->comboBox_build_system->placeholderText();
+  return ui->comboBox_build_system->currentText();
 }
 
 QStringList FormCppLanguage::list_libs()
