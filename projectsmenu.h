@@ -16,7 +16,7 @@ public:
   ~ProjectsMenu();
 
 private slots:
-  void on_pushButton_3_clicked();
+  void on_pb_reset_clicked();
 
 private:
   Ui::ProjectsMenu *ui;

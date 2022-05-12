@@ -15,6 +15,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QTreeWidget>
+#include "formtemplate.h"
 
 // TODO LIST
 // Create file +
@@ -24,9 +25,9 @@
 // Delete +
 
 
-// Create JSON -
-// Save JSON -
-// Edit JSON -
+// Create JSON +
+// Save JSON +
+// Edit JSON -+
 
 TemplatesMenu::TemplatesMenu(QWidget *parent) :
   QWidget(parent),
@@ -35,11 +36,14 @@ TemplatesMenu::TemplatesMenu(QWidget *parent) :
   ui->setupUi(this);
   QRegularExpression re("\\w{15}");
   ui->le_name_template->setValidator(new QRegularExpressionValidator(re, this));
+  dollar_writer = new DollarWriter();
+  dollar_writer->create_template_storage();
 }
 
 TemplatesMenu::~TemplatesMenu()
 {
   delete ui;
+  delete dollar_writer;
 }
 
 void TemplatesMenu::on_pb_reset_clicked()
@@ -157,7 +161,7 @@ void TemplatesMenu::create_discription_in_file(const QString& str, QTreeWidgetIt
 {
   auto item = new QTreeWidgetItem(file);
   item->setText(ColumnIndex::Type, list_type_file[TypeFile::Content]);
-  item->setTextAlignment(ColumnIndex::Type, Qt::Alignop);
+  item->setTextAlignment(ColumnIndex::Type, Qt::AlignTop);
   item->setText(ColumnIndex::Name, str);
 }
 
@@ -166,42 +170,74 @@ void TemplatesMenu::on_pb_unselect_clicked()
   ui->treeW_project_struct->clearSelection();
 }
 
-QJsonObject TemplatesMenu::doStuffWithEveryItemInMyTree(QTreeWidgetItem *item, int count)
+//QJsonObject TemplatesMenu::parse_tree_to_json(QTreeWidgetItem *item, size_t index)
+//{
+//  qDebug() << index << "] " << item->text(ColumnIndex::Type)  << item->text(ColumnIndex::Name);
+//  for( int i = 0; i < item->childCount(); ++i ){
+//    parse_tree_to_json( item->child(i), ++index);
+//  }
+//  return QJsonObject();
+//}
+
+// ["Dir:", "1", []], ["File:", "main.cpp", ["Content:", "afdsf"]]]
+QJsonArray TemplatesMenu::create_json_project_struct(QTreeWidgetItem *tree)
 {
-  QJsonObject obj;
-  int temp_count = count;
-  qDebug() << item->text(ColumnIndex::Type)  << item->text(ColumnIndex::Name) << count;
-  for( int i = 0; i < item->childCount(); ++i ){
-    count = temp_count;
-    doStuffWithEveryItemInMyTree( item->child(i), ++count);
+  QJsonArray arr;
+  arr.append(tree->text(ColumnIndex::Type));
+  arr.append(tree->text(ColumnIndex::Name));
+  // Перебераем детей
+  for(int i{0}; i < tree->childCount(); ++i)
+  {
+    arr.push_back(create_json_project_struct(tree->child(i)));
   }
-  return obj;
+
+  return arr;
 }
+
+/*
+ * f(QJsonObject* p, QTreeWidgetItem* tree)
+ * {
+ * 	если (tree.ест_детей())
+ * 	{
+ * 		f(p, tree.child(0));
+ * 	}
+ * }
+ *
+ */
 
 void TemplatesMenu::on_pb_confirm_clicked()
 {
-  QJsonObject obj;
-  obj.insert("name", ui->le_name_template->text());
+  QJsonObject* template_json = new QJsonObject();
+  template_json->insert("name", ui->le_name_template->text());
   QString language = ui->comb_project_language->currentText();
-  obj.insert("language", language);
-  if (language == "C++"){
-    obj.insert("build_system", static_cast<FormCppLanguage*>(language_form)->build_system());
+  template_json->insert("language", language);
+  if (language == "C++")
+  {
+    auto cpp_form = static_cast<FormCppLanguage*>(language_form);
+    template_json->insert("build_system", cpp_form->build_system());
     QJsonArray arr;
-    for (auto i: static_cast<FormCppLanguage*>(language_form)->list_libs()){
+    for (auto i: cpp_form->list_libs())
       arr.push_back(i);
-    }
-    obj.insert("libraries", arr);
+
+    template_json->insert("libraries", arr);
   }
-  else if (language == "PHP"){
+  else if (language == "PHP")
+  {
     QJsonArray arr;
-    for (auto i: static_cast<FormPhpLanguage*>(language_form)->list_libs()){
+    auto php_form = static_cast<FormPhpLanguage*>(language_form);
+    for (auto i: php_form->list_libs())
       arr.push_back(i);
-    }
-    obj.insert("libraries", arr);
+
+    template_json->insert("libraries", arr);
   }
-  QTreeWidget* tree = ui->treeW_project_struct;
-  doStuffWithEveryItemInMyTree(tree->invisibleRootItem(), 0);
+
+  template_json->insert("struct", create_json_project_struct(ui->treeW_project_struct->invisibleRootItem()));
+  if ( dollar_writer->save_template(QJsonDocument(*template_json), template_json->value("name").toString()) )
+    QMessageBox::about(this, "Success", "File write");
+  else
+    QMessageBox::about(this, "Error", "File not write");
 }
+
 
 /*
 {
@@ -263,7 +299,7 @@ void TemplatesMenu::on_pb_confirm_clicked()
 
 void TemplatesMenu::on_pb_select_template_clicked()
 {
-
+  ui->gridLayout_select_template->addWidget(new FormTemplate(this));
 }
 
 void TemplatesMenu::create_dir_in_tree(const QString &str)
@@ -339,11 +375,17 @@ void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
   if ( !ui->gridLayout_language_form->isEmpty())
   {
     delete language_form;
+    language_form = nullptr;
   }
 
   if ( arg1 == "C++" ) { language_form = new FormCppLanguage(); }
   else if ( arg1 == "PHP" ) { language_form = new FormPhpLanguage(); }
-  else if ( arg1 == "None") { delete language_form; return; }
+  else if ( arg1 == "None")
+  {
+    if (language_form)
+      delete language_form;
+    return;
+  }
 
   ui->gridLayout_language_form->addWidget(language_form);
 }

@@ -3,8 +3,10 @@
 
 #include <QWidget>
 #include <QFileDialog>
+#include <QJsonObject>
 #include <QTreeWidgetItem>
 
+#include "dollarwriter.h"
 
 namespace Ui {
 class TemplatesMenu;
@@ -43,7 +45,7 @@ signals:
   void file_content(const QString& str);
 
 private:
-  QJsonObject doStuffWithEveryItemInMyTree(QTreeWidgetItem *item, int count);
+  QJsonArray create_json_project_struct(QTreeWidgetItem* tree);
   void create_dir_in_tree(const QString& str);
   void create_file_in_tree(const QStringList& str);
   void create_discription_in_file(const QString& str, QTreeWidgetItem *file);
@@ -56,6 +58,7 @@ private:
 private:
   QDialog* file_dialog;
   QWidget* language_form;
+  DollarWriter* dollar_writer;
   Ui::TemplatesMenu *ui;
 
 private:

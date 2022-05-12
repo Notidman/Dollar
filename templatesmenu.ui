@@ -27,7 +27,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_creation">
       <attribute name="title">
@@ -230,7 +230,7 @@ font-size: 14px;
 font-weight: 500;
 text-decoration: none;
 color: #fff;
-background-color: red;</string>
+background-color:  #a31114;</string>
              </property>
              <property name="text">
               <string>Reset</string>
@@ -250,7 +250,7 @@ font-size: 14px;
 font-weight: 500;
 text-decoration: none;
 color: #fff;
-background-color: green;</string>
+background-color: #197211;</string>
              </property>
              <property name="text">
               <string>Accept</string>

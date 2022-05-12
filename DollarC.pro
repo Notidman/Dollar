@@ -13,8 +13,10 @@ SOURCES += \
     dialogdir.cpp \
     dialogfile.cpp \
     dialogselecttemplate.cpp \
+    dollarwriter.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
+    formtemplate.cpp \
     gitmenu.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -29,8 +31,10 @@ HEADERS += \
     dialogdir.h \
     dialogfile.h \
     dialogselecttemplate.h \
+    dollarwriter.h \
     formcpplanguage.h \
     formphplanguage.h \
+    formtemplate.h \
     gitmenu.h \
     mainwindow.h \
     projectsmenu.h \

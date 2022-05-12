@@ -11,9 +11,9 @@ FormPhpLanguage::FormPhpLanguage(QWidget *parent) :
 QStringList FormPhpLanguage::list_libs()
 {
   QStringList libs;
-  if (ui->cb_laravel->isEnabled())
+  if (ui->cb_laravel->isChecked())
     libs.append("Laravel");
-  if (ui->cb_symfony->isEnabled())
+  if (ui->cb_symfony->isChecked())
     libs.append("Symfony");
 
   return libs;

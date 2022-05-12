@@ -16,11 +16,11 @@ QString FormCppLanguage::build_system()
 QStringList FormCppLanguage::list_libs()
 {
   QStringList libs;
-  if (ui->cb_opencv->isEnabled())
+  if (ui->cb_opencv->isChecked())
     libs.append("OpenCv");
-  if (ui->cb_sdl->isEnabled())
+  if (ui->cb_sdl->isChecked())
     libs.append("SDL");
-  if (ui->cb_sfml->isEnabled())
+  if (ui->cb_sfml->isChecked())
     libs.append("SFML");
 
   return libs;

@@ -19,7 +19,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>CreateFile</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -32,7 +32,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="placeholderText">
+        <string>main.cpp</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -46,7 +50,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="textEdit_content_file"/>
+      <widget class="QTextEdit" name="textEdit_content_file">
+       <property name="placeholderText">
+        <string>Hello, world!</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

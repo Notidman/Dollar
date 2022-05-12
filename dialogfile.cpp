@@ -8,7 +8,7 @@ DialogFile::DialogFile(QWidget *parent) :
   ui(new Ui::DialogNameFile)
 {
   ui->setupUi(this);
-  QRegularExpression re("\\w{15}");
+  QRegularExpression re("\\w+.\\w{15}");
   ui->lineEdit->setValidator(new QRegularExpressionValidator(re, this));
 }
 

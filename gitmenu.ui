@@ -17,23 +17,23 @@
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pb_fetch">
        <property name="text">
-        <string>PushButton</string>
+        <string>Fetch</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pb_pull">
        <property name="text">
-        <string>PushButton</string>
+        <string>Pull</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pb_push">
        <property name="text">
-        <string>PushButton</string>
+        <string>Push</string>
        </property>
       </widget>
      </item>

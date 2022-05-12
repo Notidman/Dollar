@@ -15,7 +15,7 @@ ProjectsMenu::~ProjectsMenu()
   delete ui;
 }
 
-void ProjectsMenu::on_pushButton_3_clicked()
+void ProjectsMenu::on_pb_reset_clicked()
 {
   ui->lEdit_project_name->clear();
   ui->lEdit_project_path->clear();
