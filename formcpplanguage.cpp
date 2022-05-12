@@ -8,6 +8,29 @@ FormCppLanguage::FormCppLanguage(QWidget *parent) :
   ui->setupUi(this);
 }
 
+void FormCppLanguage::set_build_system(const QString& str)
+{
+  if ( str == "None")
+    ui->comboBox_build_system->setCurrentIndex(0);
+  else if ( str == "Make")
+    ui->comboBox_build_system->setCurrentIndex(1);
+  else if ( str == "CMake")
+    ui->comboBox_build_system->setCurrentIndex(2);
+}
+
+void FormCppLanguage::set_list_libs(const QStringList& str)
+{
+  for(auto& lib:str)
+  {
+    if ( lib == "OpenCv")
+      ui->cb_opencv->setChecked(true);
+    if ( lib == "SDL")
+      ui->cb_sdl->setChecked(true);
+    if ( lib == "SFML")
+      ui->cb_sfml->setChecked(true);
+  }
+}
+
 QString FormCppLanguage::build_system()
 {
   return ui->comboBox_build_system->currentText();

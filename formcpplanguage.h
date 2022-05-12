@@ -13,6 +13,8 @@ class FormCppLanguage : public QWidget
 
 public:
   explicit FormCppLanguage(QWidget *parent = nullptr);
+  void set_build_system(const QString &str);
+  void set_list_libs(const QStringList &str);
   QString build_system();
   QStringList list_libs();
   ~FormCppLanguage();
