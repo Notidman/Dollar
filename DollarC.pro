@@ -16,7 +16,6 @@ SOURCES += \
     dollarwriter.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
-    formtemplate.cpp \
     gitmenu.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -34,7 +33,6 @@ HEADERS += \
     dollarwriter.h \
     formcpplanguage.h \
     formphplanguage.h \
-    formtemplate.h \
     gitmenu.h \
     mainwindow.h \
     projectsmenu.h \
@@ -50,7 +48,6 @@ FORMS += \
     dialogselecttemplate.ui \
     formcpplanguage.ui \
     formphplanguage.ui \
-    formtemplate.ui \
     gitmenu.ui \
     mainwindow.ui \
     projectsmenu.ui \

@@ -44,3 +44,9 @@ bool DollarWriter::save_template(QJsonDocument document, QString file_name)
     return false;
 
 }
+
+QString DollarWriter::way_to_storage_templates()
+{
+  return QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation) +
+      '/' + name_templates_storage + '/';
+}

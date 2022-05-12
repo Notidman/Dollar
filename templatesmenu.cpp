@@ -15,7 +15,6 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QTreeWidget>
-#include "formtemplate.h"
 
 // TODO LIST
 // Create file +
@@ -209,11 +208,10 @@ void TemplatesMenu::on_pb_confirm_clicked()
 {
   QJsonObject* template_json = new QJsonObject();
   template_json->insert("name", ui->le_name_template->text());
-  QString language = ui->comb_project_language->currentText();
-  template_json->insert("language", language);
-  if (language == "C++")
+  template_json->insert("language", ui->comb_project_language->currentText());
+
+  if ( auto cpp_form = dynamic_cast<FormCppLanguage*>(language_form))
   {
-    auto cpp_form = static_cast<FormCppLanguage*>(language_form);
     template_json->insert("build_system", cpp_form->build_system());
     QJsonArray arr;
     for (auto i: cpp_form->list_libs())
@@ -221,10 +219,9 @@ void TemplatesMenu::on_pb_confirm_clicked()
 
     template_json->insert("libraries", arr);
   }
-  else if (language == "PHP")
+  else if ( auto php_form = dynamic_cast<FormPhpLanguage*>(language_form) )
   {
     QJsonArray arr;
-    auto php_form = static_cast<FormPhpLanguage*>(language_form);
     for (auto i: php_form->list_libs())
       arr.push_back(i);
 
@@ -295,12 +292,6 @@ void TemplatesMenu::on_pb_confirm_clicked()
 //    file_dialog->show();
 //  }
 //}
-
-
-void TemplatesMenu::on_pb_select_template_clicked()
-{
-  ui->gridLayout_select_template->addWidget(new FormTemplate(this));
-}
 
 void TemplatesMenu::create_dir_in_tree(const QString &str)
 {
@@ -378,15 +369,42 @@ void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
     language_form = nullptr;
   }
 
-  if ( arg1 == "C++" ) { language_form = new FormCppLanguage(); }
-  else if ( arg1 == "PHP" ) { language_form = new FormPhpLanguage(); }
+  if ( arg1 == "C++" )
+  {
+    ui->comb_project_language->setCurrentIndex(1);
+    language_form = new FormCppLanguage();
+  }
+  else if ( arg1 == "PHP" )
+  {
+    ui->comb_project_language->setCurrentIndex(2);
+    language_form = new FormPhpLanguage();
+  }
   else if ( arg1 == "None")
   {
+    ui->comb_project_language->setCurrentIndex(0);
     if (language_form)
       delete language_form;
     return;
   }
 
   ui->gridLayout_language_form->addWidget(language_form);
+}
+
+
+void TemplatesMenu::on_pb_select_template_clicked()
+{
+  const QString file_name = QFileDialog::getOpenFileName(this, "Open file", dollar_writer->way_to_storage_templates(), "*.json");
+
+  QFile jsonFile(file_name);
+  if (!jsonFile.open(QFile::ReadOnly) )
+  {
+    QMessageBox::warning(this, "Error", "Don't open file");
+    return;
+  }
+  QJsonObject template_file = QJsonDocument().fromJson(jsonFile.readAll()).object();
+
+  ui->le_name_template->setText(template_file.value("name").toString());
+  ui->comb_project_language->textActivated(template_file.value("language").toString());
+//  language_form->
 }
 

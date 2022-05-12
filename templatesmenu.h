@@ -33,11 +33,11 @@ private slots:
 
   void on_pb_confirm_clicked();
 
-  void on_pb_select_template_clicked();
-
   void on_pb_rewrite_file_clicked();
 
   void on_comb_project_language_textActivated(const QString &arg1);
+
+  void on_pb_select_template_clicked();
 
 signals:
   void dir_name(const QString& str);

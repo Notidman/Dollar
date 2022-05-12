@@ -12,6 +12,7 @@ public:
   void create_template_storage();
   QJsonDocument load_template(QString fileName);
   bool save_template(QJsonDocument document, QString file_name);
+  QString way_to_storage_templates();
 
 private:
   QString name_templates_storage = "templates";
