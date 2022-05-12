@@ -46,6 +46,7 @@ signals:
 
 private:
   QJsonArray create_json_project_struct(QTreeWidgetItem* tree);
+  void set_project_struct(QJsonArray* json);
   void create_dir_in_tree(const QString& str);
   void create_file_in_tree(const QStringList& str);
   void create_discription_in_file(const QString& str, QTreeWidgetItem *file);

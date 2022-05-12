@@ -19,6 +19,17 @@ QStringList FormPhpLanguage::list_libs()
   return libs;
 }
 
+void FormPhpLanguage::set_list_libs(const QStringList &str)
+{
+  for(auto& lib:str)
+  {
+    if ( lib == "Laravel")
+      ui->cb_laravel->setChecked(true);
+    if ( lib == "Symfony")
+      ui->cb_symfony->setChecked(true);
+  }
+}
+
 FormPhpLanguage::~FormPhpLanguage()
 {
   delete ui;

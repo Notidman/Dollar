@@ -83,6 +83,8 @@ void TemplatesMenu::on_pb_create_file_clicked()
 
 void TemplatesMenu::on_pb_delete_clicked()
 {
+  if ( !check_select_in_tree() ) { return; }
+
   if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::Dir] or
        ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::File])
   {
@@ -191,6 +193,11 @@ QJsonArray TemplatesMenu::create_json_project_struct(QTreeWidgetItem *tree)
   }
 
   return arr;
+}
+
+void TemplatesMenu::set_project_struct(QJsonArray *json)
+{
+
 }
 
 /*
@@ -398,13 +405,44 @@ void TemplatesMenu::on_pb_select_template_clicked()
   QFile jsonFile(file_name);
   if (!jsonFile.open(QFile::ReadOnly) )
   {
-    QMessageBox::warning(this, "Error", "Don't open file");
+    QMessageBox::warning(this, "Error", "The file was not opened");
     return;
   }
+
+  // Set none comboBox
+  ui->comb_project_language->setCurrentIndex(0);
+  delete language_form;
+
+  // Clear txt lineEdit
+  ui->le_name_template->clear();
+
+  // Clear file-tree
+  ui->treeW_project_struct->clear();
+
   QJsonObject template_file = QJsonDocument().fromJson(jsonFile.readAll()).object();
 
   ui->le_name_template->setText(template_file.value("name").toString());
   ui->comb_project_language->textActivated(template_file.value("language").toString());
-//  language_form->
+  if ( auto cpp_form = dynamic_cast<FormCppLanguage*>(language_form))
+  {
+    cpp_form->set_build_system(template_file.value("build_system").toString());
+    QStringList libs;
+    QJsonArray lib_in_file = template_file.value("libraries").toArray();
+
+    for (auto lib : lib_in_file)
+      libs.push_back(lib.toString());
+    cpp_form->set_list_libs(libs);
+  }
+  else if ( auto php_form = dynamic_cast<FormPhpLanguage*>(language_form) )
+  {
+    QStringList libs;
+    QJsonArray lib_in_file = template_file.value("libraries").toArray();
+
+    for (auto lib : lib_in_file)
+      libs.push_back(lib.toString());
+    php_form->set_list_libs(libs);
+  }
+
+
 }
 

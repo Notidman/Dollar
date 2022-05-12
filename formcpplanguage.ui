@@ -54,11 +54,6 @@
          <string>Make</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Bazel</string>
-        </property>
-       </item>
       </widget>
      </item>
     </layout>
