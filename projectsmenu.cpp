@@ -1,6 +1,9 @@
 #include "projectsmenu.h"
 #include "ui_projectsmenu.h"
 
+#include <QFileDialog>
+#include <QStandardPaths>
+
 ProjectsMenu::ProjectsMenu(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ProjectsMenu)
@@ -23,3 +26,9 @@ void ProjectsMenu::on_pb_reset_clicked()
   ui->colView_templates->reset();
 }
 
+
+void ProjectsMenu::on_pushButton_clicked()
+{
+  const QString file_name = QFileDialog::getExistingDirectory(this, "Open Dir", QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+
+}
