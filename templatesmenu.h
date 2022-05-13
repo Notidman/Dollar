@@ -62,26 +62,6 @@ private:
   QWidget* language_form;
   DollarWriter* dollar_writer;
   Ui::TemplatesMenu *ui;
-
-private:
-  enum class TypeFile
-  {
-    Dir = 0,
-    File,
-    Content,
-  };
-
-  const QMap<TypeFile, QString> list_type_file{{
-      {TypeFile::Dir, "Dir"},
-      {TypeFile::File, "File"},
-      {TypeFile::Content, "Content"}
-  }};
-
-  enum ColumnIndex
-  {
-    Type = 0,
-    Name,
-  };
 };
 
 #endif // TEMPLATESMENU_H

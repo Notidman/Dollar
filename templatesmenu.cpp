@@ -5,6 +5,7 @@
 #include "dialogfile.h"
 #include "formphplanguage.h"
 #include "formcpplanguage.h"
+#include "structsprojectsenums.h"
 
 #include <QFileDialog>
 #include <QDebug>

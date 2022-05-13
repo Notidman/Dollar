@@ -38,6 +38,7 @@ HEADERS += \
     projectsmenu.h \
     projectstructfilewriter.h \
     settingsmenu.h \
+    structsprojectsenums.h \
     templatesmenu.h \
     welcomemenu.h
 

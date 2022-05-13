@@ -26,6 +26,10 @@ private slots:
   void on_pb_create_clicked();
 
 private:
+  void create_project(QJsonArray array, const QString &path);
+  void create_struct_project(QString path, QJsonArray json);
+
+private:
   DollarWriter* dollar_writer;
   Ui::ProjectsMenu *ui;
 };
