@@ -6,6 +6,7 @@ FormCppLanguage::FormCppLanguage(QWidget *parent) :
   ui(new Ui::FormCppLanguage)
 {
   ui->setupUi(this);
+  ui->widget->hide();
 }
 
 void FormCppLanguage::set_build_system(const QString& str)

@@ -7,6 +7,8 @@ AboutMenu::AboutMenu(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  welcome_menu = new Welcomemenu(this);
+  ui->gridLayout_welcome_menu->addWidget(welcome_menu);
   ui->lb_qt_version_info->setText(qVersion());
   ui->lb_author_info->setText("Notidman");
   ui->lb_program_version_info->setText("0.1");
@@ -16,4 +18,5 @@ AboutMenu::AboutMenu(QWidget *parent) :
 AboutMenu::~AboutMenu()
 {
   delete ui;
+  delete welcome_menu;
 }

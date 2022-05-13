@@ -28,7 +28,7 @@ public slots:
 
 private:
   Ui::MainWindow* ui;
-  GitMenu* git_menu;
+//  GitMenu* git_menu;
   TemplatesMenu* templates_menu;
   SettingsMenu* settings_menu;
   ProjectsMenu* projects_menu;

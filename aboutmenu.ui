@@ -40,12 +40,12 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item row="5" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="lb_program_version">
+      <widget class="QLabel" name="lb_contact_developer">
        <property name="text">
-        <string>Program version:</string>
+        <string>Contact developer:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -53,13 +53,26 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="lb_program_version_info">
+      <widget class="QLabel" name="lb_contact_developer_info">
        <property name="text">
-        <string>program_version</string>
+        <string>contact_developer</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="7" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -82,12 +95,12 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <item row="4" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLabel" name="lb_contact_developer">
+      <widget class="QLabel" name="lb_program_version">
        <property name="text">
-        <string>Contact developer:</string>
+        <string>Program version:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -95,26 +108,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="lb_contact_developer_info">
+      <widget class="QLabel" name="lb_program_version_info">
        <property name="text">
-        <string>contact_developer</string>
+        <string>program_version</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item row="6" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    <layout class="QGridLayout" name="gridLayout_welcome_menu"/>
    </item>
   </layout>
  </widget>

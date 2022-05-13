@@ -28,6 +28,8 @@ private slots:
 private:
   void create_project(QJsonArray array, const QString &path);
   void create_struct_project(QString path, QJsonArray json);
+  void gen_make(const QString& path);
+  void gen_cmake(const QString& path);
 
 private:
   DollarWriter* dollar_writer;

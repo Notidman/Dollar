@@ -249,7 +249,7 @@ void TemplatesMenu::set_project_struct(QTreeWidgetItem *tree, QJsonArray json)
 
 void TemplatesMenu::on_pb_confirm_clicked()
 {
-  if ( !ui->le_name_template->size().isEmpty())
+  if ( ui->le_name_template->text().isEmpty())
   {
     QMessageBox::warning(this, "Error", "Template name can't be empty!");
     return;
@@ -284,15 +284,15 @@ void TemplatesMenu::on_pb_confirm_clicked()
   template_json->insert("struct", json_project_struct);
   if ( dollar_writer->save_template(QJsonDocument(*template_json), template_json->value("name").toString()) )
   {
-//    // Set none comboBox
-//    ui->comb_project_language->setCurrentIndex(0);
-//    delete language_form;
+    // Set none comboBox
+    ui->comb_project_language->setCurrentIndex(0);
+    delete language_form;
 
-//    // Clear txt lineEdit
-//    ui->le_name_template->clear();
+    // Clear txt lineEdit
+    ui->le_name_template->clear();
 
-//    // Clear file-tree
-//    ui->treeW_project_struct->clear();
+    // Clear file-tree
+    ui->treeW_project_struct->clear();
     QMessageBox::about(this, "Success", "File write");
   }
   else

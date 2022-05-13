@@ -96,7 +96,7 @@ text-decoration: none;*/
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_projects">
        <attribute name="title">
@@ -125,16 +125,6 @@ text-decoration: none;*/
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gl_settings_menu"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_git">
-       <attribute name="title">
-        <string>Git</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gl_git_menu"/>
         </item>
        </layout>
       </widget>
