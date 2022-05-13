@@ -18,13 +18,9 @@ void DollarWriter::create_template_storage()
   }
 }
 
-QJsonDocument DollarWriter::load_template(QString file_name)
+QJsonDocument DollarWriter::load_template(QString path_file)
 {
-  const QString& path_to_file =
-      QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation) +
-      '/' + name_templates_storage + '/' + file_name;
-
-  QFile jsonFile(path_to_file);
+  QFile jsonFile(path_file);
   jsonFile.open(QFile::ReadOnly);
   return QJsonDocument().fromJson(jsonFile.readAll());
 }

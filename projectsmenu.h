@@ -2,6 +2,7 @@
 #define PROJECTSMENU_H
 
 #include <QWidget>
+#include "dollarwriter.h"
 
 namespace Ui {
 class ProjectsMenu;
@@ -18,9 +19,14 @@ public:
 private slots:
   void on_pb_reset_clicked();
 
-  void on_pushButton_clicked();
+  void on_pb_select_template_clicked();
+
+  void on_pb_select_path_clicked();
+
+  void on_pb_create_clicked();
 
 private:
+  DollarWriter* dollar_writer;
   Ui::ProjectsMenu *ui;
 };
 

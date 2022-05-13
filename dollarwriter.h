@@ -10,7 +10,7 @@ class DollarWriter
 public:
   DollarWriter();
   void create_template_storage();
-  QJsonDocument load_template(QString fileName);
+  QJsonDocument load_template(QString path_file);
   bool save_template(QJsonDocument document, QString file_name);
   QString way_to_storage_templates();
 

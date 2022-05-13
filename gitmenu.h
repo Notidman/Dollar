@@ -15,6 +15,9 @@ public:
   explicit GitMenu(QWidget *parent = nullptr);
   ~GitMenu();
 
+private slots:
+  void on_pushButton_clicked();
+
 private:
   Ui::GitMenu *ui;
 };
