@@ -86,43 +86,35 @@ void ProjectsMenu::on_pb_create_clicked()
       gen_cmake(way);
   }
 
-  create_project(json.value("struct").toArray(), way);
+  create_project_struct(json.value("struct").toArray(), way);
 
   QMessageBox::about(this, "Success", "Project was be created");
 }
 
-void ProjectsMenu::create_project(QJsonArray array, const QString& path)
+void ProjectsMenu::create_project_struct(const QJsonArray& array, const QString& path)
 {
   for(int i = 0; i < array.count(); ++i)
   {
-    qDebug() << array.at(i).toArray();
-    create_struct_project(path, array.at(i).toArray());
-    qDebug() << "--------------------------------";
+    create_project_element(array.at(i).toObject(), path);
   }
 }
 
-void ProjectsMenu::create_struct_project(QString path, QJsonArray json)
+void ProjectsMenu::create_project_element(const QJsonObject& json, const QString& path)
 {
-  if( json.at(0).toString() == list_type_file[TypeFile::Dir])
+  auto type = json.value("Type").toString();
+  auto name = json.value("Name").toString();
+
+  if( type == map_type_file[TypeFile::Dir])
   {
     QDir dir(path);
-    if( dir.mkdir(json.at(1).toString()) )
-    {
-      qDebug() << "Created dir! " << json.at(1).toString();
-    }
-
-    if( json.count() > 2)
-    {
-      for(int i = 0; i < json.count() - 2; ++i)
-        create_struct_project(path + '/' + json.at(1).toString(), json.at(i+2).toArray());
-    }
+    dir.mkdir(name);
+    create_project_struct(json.value("Children").toArray(), path + '/' + name);
   }
-  else if (json.at(0).toString() == list_type_file[TypeFile::File] )
+  else if ( type == map_type_file[TypeFile::File])
   {
-    QFile file(path + '/' + json.at(1).toString());
+    QFile file(path + '/' + name);
     file.open(QFile::WriteOnly);
-    file.write(json.at(2).toArray().at(1).toString().toUtf8());
-    qDebug() << "Created file! " << json.at(1).toString();
+    file.write(json.value("Children").toArray().at(0).toObject().value("Name").toString().toUtf8());
     file.close();
   }
 }
@@ -145,6 +137,43 @@ add_executable(${PROJECT_NAME} ${SOURCES})\n").toUtf8());
   qDebug() << "CMake created!";
 }
 
+//void TemplatesMenu::fill_tree(QTreeWidgetItem *item, const QJsonArray& array)
+//{
+//  for(int i = 0; i < array.count(); ++i)
+//  {
+//    parse_element_json(item, array.at(i).toObject());
+//  }
+//}
+
+//void TemplatesMenu::parse_element_json(QTreeWidgetItem *item, const QJsonObject json)
+//{
+//  auto type = json.value("Type").toString();
+//  auto name = json.value("Name").toString();
+
+//  if( type == map_type_file[TypeFile::Dir])
+//  {
+//    auto dir_item = new QTreeWidgetItem(item);
+//    dir_item->setText(ColumnIndex::Type, type);
+//    dir_item->setText(ColumnIndex::Name, name);
+//    fill_tree(dir_item, json.value("Children").toArray());
+//  }
+//  else if ( type == map_type_file[TypeFile::File])
+//  {
+//    auto file_item = new QTreeWidgetItem(item);
+//    file_item->setText(ColumnIndex::Type, type);
+//    file_item->setText(ColumnIndex::Name, name);
+//    auto content = new QTreeWidgetItem(file_item);
+//    content->setText(ColumnIndex::Type,
+//                     json.value("Children").toArray().at(0).toObject().value("Type").toString());
+//    content->setText(ColumnIndex::Name,
+//                     json.value("Children").toArray().at(0).toObject().value("Name").toString());
+//  }
+//}
+
+
+
+
+// OLD VERSION
 
 //void TemplatesMenu::create_tree_by_json(QJsonArray array)
 //{

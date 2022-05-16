@@ -26,8 +26,8 @@ private slots:
   void on_pb_create_clicked();
 
 private:
-  void create_project(QJsonArray array, const QString &path);
-  void create_struct_project(QString path, QJsonArray json);
+  void create_project_struct(const QJsonArray &array, const QString &path);
+  void create_project_element(const QJsonObject &json, const QString &path);
   void gen_make(const QString& path);
   void gen_cmake(const QString& path);
 

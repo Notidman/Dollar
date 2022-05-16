@@ -86,8 +86,8 @@ void TemplatesMenu::on_pb_delete_clicked()
 {
   if ( !check_select_in_tree() ) { return; }
 
-  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::Dir] or
-       ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::File])
+  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::Dir] or
+       ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::File])
   {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Question", "Are you sure?",
                                                              QMessageBox::Yes | QMessageBox::No);
@@ -120,7 +120,7 @@ bool TemplatesMenu::check_select_in_tree_file()
 {
   if ( !check_select_in_tree()) { return false; }
 
-  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) != list_type_file[TypeFile::File])
+  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) != map_type_file[TypeFile::File])
   {
     QMessageBox::critical(this, "Error", "Select file!");
     return false;
@@ -135,7 +135,7 @@ bool TemplatesMenu::check_select_in_tree_dir()
 {
   if ( !check_select_in_tree()) { return false; }
 
-  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) != list_type_file[TypeFile::Dir])
+  if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) != map_type_file[TypeFile::Dir])
   {
     QMessageBox::critical(this, "Error", "Select dir!");
     return false;
@@ -162,7 +162,7 @@ void TemplatesMenu::rename_file(const QStringList &str)
 void TemplatesMenu::create_discription_in_file(const QString& str, QTreeWidgetItem* file)
 {
   auto item = new QTreeWidgetItem(file);
-  item->setText(ColumnIndex::Type, list_type_file[TypeFile::Content]);
+  item->setText(ColumnIndex::Type, map_type_file[TypeFile::Content]);
   item->setTextAlignment(ColumnIndex::Type, Qt::AlignTop);
   item->setText(ColumnIndex::Name, str);
 }
@@ -182,70 +182,76 @@ void TemplatesMenu::on_pb_unselect_clicked()
 //}
 
 // ["Dir:", "1", []], ["File:", "main.cpp", ["Content:", "afdsf"]]]
-QJsonArray TemplatesMenu::create_json_project_struct(QTreeWidgetItem *tree)
-{
-  QJsonArray arr;
-  arr.append(tree->text(ColumnIndex::Type));
-  arr.append(tree->text(ColumnIndex::Name));
-  // Перебераем детей
-  for(int i{0}; i < tree->childCount(); ++i)
-  {
-    arr.push_back(create_json_project_struct(tree->child(i)));
-  }
+//QJsonArray TemplatesMenu::create_json_project_struct(QTreeWidgetItem *tree)
+//{
+//  QJsonArray arr;
+//  arr.append(tree->text(ColumnIndex::Type));
+//  arr.append(tree->text(ColumnIndex::Name));
+//  for(int i{0}; i < tree->childCount(); ++i)
+//  {
+//    arr.push_back(create_json_project_struct(tree->child(i)));
+//  }
 
-  return arr;
+//  return arr;
+//}
+
+// {type: "Dir", name: "dir", childrens: [ {t,n,c}, {t,n,c}, ... ]}
+QJsonObject TemplatesMenu::create_json_struct(QTreeWidgetItem *tree)
+{
+  QJsonObject obj;
+  obj.insert("Type", tree->text(ColumnIndex::Type));
+  obj.insert("Name", tree->text(ColumnIndex::Name));
+
+  QJsonArray childs;
+
+  if ( tree->text(ColumnIndex::Type) == map_type_file[TypeFile::Content])
+  {
+    return obj;
+  }
+  for(int i = 0; i < tree->childCount(); ++i)
+  {
+    childs.push_back(create_json_struct(tree->child(i)));
+  }
+  obj.insert("Children", childs);
+
+  return obj;
 }
 
-void TemplatesMenu::create_tree_by_json(QJsonArray array)
+void TemplatesMenu::fill_tree(QTreeWidgetItem *item, const QJsonArray& array)
 {
-  auto root = ui->treeW_project_struct->invisibleRootItem();
-
   for(int i = 0; i < array.count(); ++i)
   {
-    qDebug() << array.at(i).toArray();
-    set_project_struct(root, array.at(i).toArray());
-    qDebug() << "--------------------------------";
+    parse_element_json(item, array.at(i).toObject());
   }
 }
 
-void TemplatesMenu::set_project_struct(QTreeWidgetItem *tree, QJsonArray json)
+void TemplatesMenu::parse_element_json(QTreeWidgetItem *item, const QJsonObject json)
 {
-  if( json.at(0).toString() == list_type_file[TypeFile::Dir])
-  {
-    auto item = new QTreeWidgetItem(tree);
-    item->setText(ColumnIndex::Type, json.at(0).toString());
-    item->setText(ColumnIndex::Name, json.at(1).toString());
+  auto type = json.value("Type").toString();
+  auto name = json.value("Name").toString();
 
-    if( json.count() > 2)
-    {
-      for(int i = 0; i < json.count() - 2; ++i)
-        set_project_struct(item, json.at(i+2).toArray());
-    }
-  }
-  else if (json.at(0).toString() == list_type_file[TypeFile::File] )
+  if( type == map_type_file[TypeFile::Dir])
   {
-    auto item = new QTreeWidgetItem(tree);
-    item->setText(ColumnIndex::Type, json.at(0).toString());
-    item->setText(ColumnIndex::Name, json.at(1).toString());
-    auto content = new QTreeWidgetItem(item);
-    content->setText(ColumnIndex::Type, json.at(2).toArray().at(0).toString());
-    content->setText(ColumnIndex::Name, json.at(2).toArray().at(1).toString());
+    auto dir_item = new QTreeWidgetItem(item);
+    dir_item->setText(ColumnIndex::Type, type);
+    dir_item->setText(ColumnIndex::Name, name);
+    fill_tree(dir_item, json.value("Children").toArray());
+  }
+  else if ( type == map_type_file[TypeFile::File])
+  {
+    auto file_item = new QTreeWidgetItem(item);
+    file_item->setText(ColumnIndex::Type, type);
+    file_item->setText(ColumnIndex::Name, name);
+    auto content = new QTreeWidgetItem(file_item);
+    content->setText(ColumnIndex::Type,
+                     json.value("Children").toArray().at(0).toObject().value("Type").toString());
+    content->setText(ColumnIndex::Name,
+                     json.value("Children").toArray().at(0).toObject().value("Name").toString());
   }
 }
 
 // ["Dir:", "1", []], ["File:", "main.cpp", ["Content:", "afdsf"]]]
 
-
-/*
- * f(QJsonObject* p, QTreeWidgetItem* tree)
- * {
- * 	если (tree.ест_детей())
- * 	{
- * 		f(p, tree.child(0));
- * 	}
- * }
- *
- */
 
 void TemplatesMenu::on_pb_confirm_clicked()
 {
@@ -277,9 +283,9 @@ void TemplatesMenu::on_pb_confirm_clicked()
     template_json->insert("libraries", arr);
   }
 
-  auto json_project_struct = create_json_project_struct(ui->treeW_project_struct->invisibleRootItem());
-  json_project_struct.removeFirst();
-  json_project_struct.removeFirst();
+  auto json_project_struct = create_json_struct(ui->treeW_project_struct->invisibleRootItem()).value("Children").toArray();
+//  json_project_struct.removeFirst();
+//  json_project_struct.removeFirst();
 
   template_json->insert("struct", json_project_struct);
   if ( dollar_writer->save_template(QJsonDocument(*template_json), template_json->value("name").toString()) )
@@ -366,13 +372,13 @@ void TemplatesMenu::create_dir_in_tree(const QString &str)
   {
     auto item = new QTreeWidgetItem(ui->treeW_project_struct);
     item->setText(ColumnIndex::Name, str);
-    item->setText(ColumnIndex::Type, list_type_file[TypeFile::Dir]);
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::Dir]);
   }
   else if ( check_select_in_tree_dir())
   {
     auto item = new QTreeWidgetItem(items.at(0));
     item->setText(ColumnIndex::Name, str);
-    item->setText(ColumnIndex::Type, list_type_file[TypeFile::Dir]);
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::Dir]);
   }
 }
 
@@ -383,14 +389,14 @@ void TemplatesMenu::create_file_in_tree(const QStringList &str)
   {
     auto item = new QTreeWidgetItem(ui->treeW_project_struct);
     item->setText(ColumnIndex::Name, str.at(0));
-    item->setText(ColumnIndex::Type, list_type_file[TypeFile::File]);
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::File]);
     create_discription_in_file(str.at(1), item);
   }
   else if ( check_select_in_tree_dir())
   {
     auto item = new QTreeWidgetItem(items.at(0));
     item->setText(ColumnIndex::Name, str.at(0));
-    item->setText(ColumnIndex::Type, list_type_file[TypeFile::File]);
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::File]);
     create_discription_in_file(str.at(1), item);
   }
 }
@@ -400,7 +406,7 @@ void TemplatesMenu::on_pb_rewrite_file_clicked()
 {
   if ( check_select_in_tree())
   {
-    if(ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::Dir])
+    if(ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::Dir])
     {
       file_dialog = new DialogDir(this);
       connect(this, &TemplatesMenu::dir_name, static_cast<DialogDir*>(file_dialog), &DialogDir::set_dir_name);
@@ -408,7 +414,7 @@ void TemplatesMenu::on_pb_rewrite_file_clicked()
       emit dir_name(ui->treeW_project_struct->selectedItems().at(0)->text(ColumnIndex::Name));
       file_dialog->show();
     }
-    else if (ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == list_type_file[TypeFile::File])
+    else if (ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::File])
     {
       file_dialog = new DialogFile(this);
       connect(this, &TemplatesMenu::file_name, static_cast<DialogFile*>(file_dialog), &DialogFile::set_file_name);
@@ -468,16 +474,6 @@ void TemplatesMenu::on_pb_select_template_clicked()
     return;
   }
 
-  // Set none comboBox
-  ui->comb_project_language->setCurrentIndex(0);
-  delete language_form;
-
-  // Clear txt lineEdit
-  ui->le_name_template->clear();
-
-  // Clear file-tree
-  ui->treeW_project_struct->clear();
-
   QJsonObject template_file = QJsonDocument().fromJson(jsonFile.readAll()).object();
 
   ui->le_name_template->setText(template_file.value("name").toString());
@@ -502,6 +498,8 @@ void TemplatesMenu::on_pb_select_template_clicked()
     php_form->set_list_libs(libs);
   }
 
-  create_tree_by_json(template_file.value("struct").toArray());
+//  create_tree_by_json(template_file.value("struct").toArray());
+  fill_tree(ui->treeW_project_struct->invisibleRootItem(),
+                      template_file.value("struct").toArray());
 }
 

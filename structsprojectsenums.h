@@ -9,7 +9,7 @@ enum class TypeFile
   Content,
 };
 
-const QMap<TypeFile, QString> list_type_file{{
+const QMap<TypeFile, QString> map_type_file{{
     {TypeFile::Dir, "Dir"},
     {TypeFile::File, "File"},
     {TypeFile::Content, "Content"}
