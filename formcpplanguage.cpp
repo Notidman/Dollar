@@ -12,10 +12,10 @@ void FormCppLanguage::set_build_system(const QString& str)
 {
   if ( str == "None")
     ui->comboBox_build_system->setCurrentIndex(0);
-  else if ( str == "Make")
-    ui->comboBox_build_system->setCurrentIndex(1);
+//  else if ( str == "Make")
+//    ui->comboBox_build_system->setCurrentIndex(1);
   else if ( str == "CMake")
-    ui->comboBox_build_system->setCurrentIndex(2);
+    ui->comboBox_build_system->setCurrentIndex(1);
 }
 
 void FormCppLanguage::set_list_libs(const QStringList& str)

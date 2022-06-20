@@ -3,8 +3,8 @@
 #include "dialogdir.h"
 #include "dialogfile.h"
 #include "dialogfile.h"
-#include "formphplanguage.h"
 #include "formcpplanguage.h"
+#include "formclanguage.h"
 #include "structsprojectsenums.h"
 
 #include <QFileDialog>
@@ -16,6 +16,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QTreeWidget>
+#include <QStandardPaths>
 
 // TODO LIST
 // Create file +
@@ -37,6 +38,7 @@ TemplatesMenu::TemplatesMenu(QWidget *parent) :
   QRegularExpression re("\\w{15}");
   ui->le_name_template->setValidator(new QRegularExpressionValidator(re, this));
   dollar_writer = new DollarWriter();
+  language_form = nullptr;
   dollar_writer->create_template_storage();
 }
 
@@ -52,15 +54,7 @@ void TemplatesMenu::on_pb_reset_clicked()
                                                            QMessageBox::Yes | QMessageBox::No);
   if ( reply == QMessageBox::Yes)
   {
-    // Set none comboBox
-    ui->comb_project_language->setCurrentIndex(0);
-    delete language_form;
-
-    // Clear txt lineEdit
-    ui->le_name_template->clear();
-
-    // Clear file-tree
-    ui->treeW_project_struct->clear();
+    clear_templates_menu();
   }
 }
 
@@ -87,7 +81,8 @@ void TemplatesMenu::on_pb_delete_clicked()
   if ( !check_select_in_tree() ) { return; }
 
   if( ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::Dir] or
-       ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::File])
+       ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::File] or
+      ui->treeW_project_struct->selectedItems().at(ColumnIndex::Type)->text(0) == map_type_file[TypeFile::ExternalFile])
   {
     QMessageBox::StandardButton reply = QMessageBox::question(this, "Question", "Are you sure?",
                                                              QMessageBox::Yes | QMessageBox::No);
@@ -159,12 +154,34 @@ void TemplatesMenu::rename_file(const QStringList &str)
   item->child(0)->setText(ColumnIndex::Name, str.at(1));
 }
 
+void TemplatesMenu::clear_templates_menu()
+{
+  ui->le_name_template->setText("");
+
+  ui->comb_project_language->setCurrentIndex(0);
+//  delete language_form;
+
+  ui->rb_version_control_git->setChecked(false);
+
+  ui->treeW_project_struct->clear();
+}
+
 void TemplatesMenu::create_discription_in_file(const QString& str, QTreeWidgetItem* file)
 {
   auto item = new QTreeWidgetItem(file);
   item->setText(ColumnIndex::Type, map_type_file[TypeFile::Content]);
   item->setTextAlignment(ColumnIndex::Type, Qt::AlignTop);
   item->setText(ColumnIndex::Name, str);
+}
+
+void TemplatesMenu::create_discription_in_file_outside(const QString& file_path, QTreeWidgetItem *file)
+{
+  auto item = new QTreeWidgetItem(file);
+  item->setText(ColumnIndex::Type, map_type_file[TypeFile::Content]);
+  item->setTextAlignment(ColumnIndex::Type, Qt::AlignTop);
+  item->setText(ColumnIndex::Name, file_path);
+
+  file->setChildIndicatorPolicy(QTreeWidgetItem::ChildIndicatorPolicy::DontShowIndicator);
 }
 
 void TemplatesMenu::on_pb_unselect_clicked()
@@ -199,8 +216,8 @@ void TemplatesMenu::on_pb_unselect_clicked()
 QJsonObject TemplatesMenu::create_json_struct(QTreeWidgetItem *tree)
 {
   QJsonObject obj;
-  obj.insert("Type", tree->text(ColumnIndex::Type));
-  obj.insert("Name", tree->text(ColumnIndex::Name));
+  obj.insert(jsonkeys::struct_pj_type, tree->text(ColumnIndex::Type));
+  obj.insert(jsonkeys::struct_pj_name, tree->text(ColumnIndex::Name));
 
   QJsonArray childs;
 
@@ -212,7 +229,7 @@ QJsonObject TemplatesMenu::create_json_struct(QTreeWidgetItem *tree)
   {
     childs.push_back(create_json_struct(tree->child(i)));
   }
-  obj.insert("Children", childs);
+  obj.insert(jsonkeys::struct_pj_childr, childs);
 
   return obj;
 }
@@ -227,15 +244,15 @@ void TemplatesMenu::fill_tree(QTreeWidgetItem *item, const QJsonArray& array)
 
 void TemplatesMenu::parse_element_json(QTreeWidgetItem *item, const QJsonObject json)
 {
-  auto type = json.value("Type").toString();
-  auto name = json.value("Name").toString();
+  auto type = json.value(jsonkeys::struct_pj_type).toString();
+  auto name = json.value(jsonkeys::struct_pj_name).toString();
 
   if( type == map_type_file[TypeFile::Dir])
   {
     auto dir_item = new QTreeWidgetItem(item);
     dir_item->setText(ColumnIndex::Type, type);
     dir_item->setText(ColumnIndex::Name, name);
-    fill_tree(dir_item, json.value("Children").toArray());
+    fill_tree(dir_item, json.value(jsonkeys::struct_pj_childr).toArray());
   }
   else if ( type == map_type_file[TypeFile::File])
   {
@@ -244,9 +261,28 @@ void TemplatesMenu::parse_element_json(QTreeWidgetItem *item, const QJsonObject 
     file_item->setText(ColumnIndex::Name, name);
     auto content = new QTreeWidgetItem(file_item);
     content->setText(ColumnIndex::Type,
-                     json.value("Children").toArray().at(0).toObject().value("Type").toString());
+                     json.value(jsonkeys::struct_pj_childr).toArray().at(0)
+                     .toObject().value(jsonkeys::struct_pj_type).toString());
+
     content->setText(ColumnIndex::Name,
-                     json.value("Children").toArray().at(0).toObject().value("Name").toString());
+                     json.value(jsonkeys::struct_pj_childr).toArray().at(0)
+                     .toObject().value(jsonkeys::struct_pj_name).toString());
+  }
+  else if ( type == map_type_file[TypeFile::ExternalFile])
+  {
+    auto bfile_item = new QTreeWidgetItem(item);
+    bfile_item->setText(ColumnIndex::Type, type);
+    bfile_item->setText(ColumnIndex::Name, name);
+    auto content = new QTreeWidgetItem(bfile_item);
+    content->setText(ColumnIndex::Type,
+                     json.value(jsonkeys::struct_pj_childr).toArray().at(0)
+                     .toObject().value(jsonkeys::struct_pj_type).toString());
+
+    content->setText(ColumnIndex::Name,
+                     json.value(jsonkeys::struct_pj_childr).toArray().at(0)
+                     .toObject().value(jsonkeys::struct_pj_name).toString());
+
+    bfile_item->setChildIndicatorPolicy(QTreeWidgetItem::ChildIndicatorPolicy::DontShowIndicator);
   }
 }
 
@@ -262,43 +298,47 @@ void TemplatesMenu::on_pb_confirm_clicked()
   }
 
   QJsonObject* template_json = new QJsonObject();
-  template_json->insert("name", ui->le_name_template->text());
-  template_json->insert("language", ui->comb_project_language->currentText());
+  template_json->insert(jsonkeys::name, ui->le_name_template->text());
+
+  if ( ui->rb_version_control_git->isChecked())
+  {
+    template_json->insert(jsonkeys::control_version, "Git");
+  }
+  else
+  {
+    template_json->insert(jsonkeys::control_version, "None");
+  }
+
+  template_json->insert(jsonkeys::language, ui->comb_project_language->currentText());
 
   if ( auto cpp_form = dynamic_cast<FormCppLanguage*>(language_form))
   {
-    template_json->insert("build_system", cpp_form->build_system());
+    template_json->insert(jsonkeys::build_system, cpp_form->build_system());
     QJsonArray arr;
     for (auto i: cpp_form->list_libs())
       arr.push_back(i);
 
-    template_json->insert("libraries", arr);
+    template_json->insert(jsonkeys::libraries, arr);
   }
-  else if ( auto php_form = dynamic_cast<FormPhpLanguage*>(language_form) )
+  else if ( auto c_form = dynamic_cast<FormCLanguage*>(language_form) )
   {
+    template_json->insert(jsonkeys::build_system, c_form->build_system());
     QJsonArray arr;
-    for (auto i: php_form->list_libs())
+    for (auto i: c_form->list_libs())
       arr.push_back(i);
 
-    template_json->insert("libraries", arr);
+    template_json->insert(jsonkeys::libraries, arr);
   }
 
-  auto json_project_struct = create_json_struct(ui->treeW_project_struct->invisibleRootItem()).value("Children").toArray();
+  auto json_project_struct = create_json_struct(ui->treeW_project_struct->invisibleRootItem())
+      .value(jsonkeys::struct_pj_childr).toArray();
 //  json_project_struct.removeFirst();
 //  json_project_struct.removeFirst();
 
-  template_json->insert("struct", json_project_struct);
-  if ( dollar_writer->save_template(QJsonDocument(*template_json), template_json->value("name").toString()) )
+  template_json->insert(jsonkeys::struct_pj, json_project_struct);
+  if ( dollar_writer->save_drc(QJsonDocument(*template_json), template_json->value(jsonkeys::name).toString()) )
   {
-    // Set none comboBox
-    ui->comb_project_language->setCurrentIndex(0);
-    delete language_form;
-
-    // Clear txt lineEdit
-    ui->le_name_template->clear();
-
-    // Clear file-tree
-    ui->treeW_project_struct->clear();
+    clear_templates_menu();
     QMessageBox::about(this, "Success", "File write");
   }
   else
@@ -446,16 +486,16 @@ void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
     ui->comb_project_language->setCurrentIndex(1);
     language_form = new FormCppLanguage();
   }
-  else if ( arg1 == "PHP" )
+  else if ( arg1 == "C" )
   {
     ui->comb_project_language->setCurrentIndex(2);
-    language_form = new FormPhpLanguage();
+    language_form = new FormCLanguage();
   }
   else if ( arg1 == "None")
   {
-    ui->comb_project_language->setCurrentIndex(0);
-    if (language_form)
-      delete language_form;
+//    ui->comb_project_language->setCurrentIndex(0);
+//    if (language_form)
+//      delete language_form;
     return;
   }
 
@@ -465,41 +505,99 @@ void TemplatesMenu::on_comb_project_language_textActivated(const QString &arg1)
 
 void TemplatesMenu::on_pb_select_template_clicked()
 {
-  const QString file_name = QFileDialog::getOpenFileName(this, "Open file", dollar_writer->way_to_storage_templates(), "*.json");
+  const QString drc_way = QFileDialog::getOpenFileName(this, "Open file", dollar_writer->way_to_storage_templates(), "*.drc");
 
-  QFile jsonFile(file_name);
+  dollar_writer->create_tmp_dir(drc_way);
+
+  QFile jsonFile(dollar_writer->get_way_metafile());
   if (!jsonFile.open(QFile::ReadOnly) )
   {
     QMessageBox::warning(this, "Error", "The file was not opened");
     return;
   }
 
+  clear_templates_menu();
+
   QJsonObject template_file = QJsonDocument().fromJson(jsonFile.readAll()).object();
 
-  ui->le_name_template->setText(template_file.value("name").toString());
-  ui->comb_project_language->textActivated(template_file.value("language").toString());
+  ui->le_name_template->setText(template_file.value(jsonkeys::name).toString());
+
+  if( template_file.value(jsonkeys::control_version) == "Git")
+  {
+    ui->rb_version_control_git->setChecked(true);
+  }
+  else
+  {
+    ui->rb_version_control_git->setChecked(false);
+  }
+
+  ui->comb_project_language->textActivated(template_file.value(jsonkeys::language).toString());
   if ( auto cpp_form = dynamic_cast<FormCppLanguage*>(language_form))
   {
-    cpp_form->set_build_system(template_file.value("build_system").toString());
+    cpp_form->set_build_system(template_file.value(jsonkeys::build_system).toString());
     QStringList libs;
-    QJsonArray lib_in_file = template_file.value("libraries").toArray();
+    QJsonArray lib_in_file = template_file.value(jsonkeys::libraries).toArray();
 
     for (auto lib : lib_in_file)
       libs.push_back(lib.toString());
     cpp_form->set_list_libs(libs);
   }
-  else if ( auto php_form = dynamic_cast<FormPhpLanguage*>(language_form) )
+  else if ( auto c_form = dynamic_cast<FormCLanguage*>(language_form) )
   {
+    c_form->set_build_system(template_file.value(jsonkeys::build_system).toString());
     QStringList libs;
-    QJsonArray lib_in_file = template_file.value("libraries").toArray();
+    QJsonArray lib_in_file = template_file.value(jsonkeys::libraries).toArray();
 
     for (auto lib : lib_in_file)
       libs.push_back(lib.toString());
-    php_form->set_list_libs(libs);
+    c_form->set_list_libs(libs);
   }
 
 //  create_tree_by_json(template_file.value("struct").toArray());
   fill_tree(ui->treeW_project_struct->invisibleRootItem(),
-                      template_file.value("struct").toArray());
+                      template_file.value(jsonkeys::struct_pj).toArray());
+
+  dollar_writer->remove_tmp_dir();
 }
 
+
+void TemplatesMenu::on_pb_remove_template_clicked()
+{
+  const QString file_name = QFileDialog::getOpenFileName(this, "Remove file", dollar_writer->way_to_storage_templates(), "*.drc");
+  QFile jsonFile(file_name);
+  if (!jsonFile.open(QFile::WriteOnly) )
+  {
+    QMessageBox::warning(this, "Error", "The file was not opened");
+    return;
+  }
+
+  jsonFile.remove();
+
+  QMessageBox::about(this, "Success", "The file has been deleted");
+}
+
+
+
+void TemplatesMenu::on_pb_load_file_clicked()
+{
+  const QString file_path = QFileDialog::getOpenFileName(this, "Load file",
+                                                         QStandardPaths::writableLocation(
+                                                           QStandardPaths::DesktopLocation));
+  auto items = ui->treeW_project_struct->selectedItems();
+  if( items.isEmpty())
+  {
+    auto item = new QTreeWidgetItem(ui->treeW_project_struct);
+    item->setText(ColumnIndex::Name, QFileInfo(file_path).fileName() );
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::ExternalFile]);
+    create_discription_in_file_outside(file_path, item);
+    QMessageBox::about(this, "Success", "The file has been loaded");
+  }
+  else if ( check_select_in_tree_dir())
+  {
+    auto item = new QTreeWidgetItem(items.at(0));
+    item->setText(ColumnIndex::Name, QFileInfo(file_path).fileName() );
+    item->setText(ColumnIndex::Type, map_type_file[TypeFile::ExternalFile]);
+    create_discription_in_file_outside(file_path, item);
+    QMessageBox::about(this, "Success", "The file has been loaded");
+  }
+}

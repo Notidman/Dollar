@@ -39,6 +39,10 @@ private slots:
 
   void on_pb_select_template_clicked();
 
+  void on_pb_remove_template_clicked();
+
+  void on_pb_load_file_clicked();
+
 signals:
   void dir_name(const QString& str);
   void file_name(const QString& str);
@@ -51,11 +55,13 @@ private:
   void create_dir_in_tree(const QString& str);
   void create_file_in_tree(const QStringList& str);
   void create_discription_in_file(const QString& str, QTreeWidgetItem *file);
+  void create_discription_in_file_outside(const QString& file_path, QTreeWidgetItem *file);
   bool check_select_in_tree();
   bool check_select_in_tree_file();
   bool check_select_in_tree_dir();
   void rename_dir(const QString& str);
   void rename_file(const QStringList& str);
+  void clear_templates_menu();
 
 private:
   QDialog* file_dialog;

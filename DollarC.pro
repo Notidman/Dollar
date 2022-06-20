@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++17 staticlib
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     aboutmenu.cpp \
+    cppfilewriter.cpp \
     dialogdir.cpp \
     dialogfile.cpp \
     dialogselecttemplate.cpp \
     dollarwriter.cpp \
+    formclanguage.cpp \
     formcpplanguage.cpp \
     formphplanguage.cpp \
     gitmenu.cpp \
@@ -27,10 +29,13 @@ SOURCES += \
 
 HEADERS += \
     aboutmenu.h \
+    abstractlanguagefilewriter.h \
+    cppfilewriter.h \
     dialogdir.h \
     dialogfile.h \
     dialogselecttemplate.h \
     dollarwriter.h \
+    formclanguage.h \
     formcpplanguage.h \
     formphplanguage.h \
     gitmenu.h \
@@ -47,6 +52,7 @@ FORMS += \
     dialogdir.ui \
     dialogfile.ui \
     dialogselecttemplate.ui \
+    formclanguage.ui \
     formcpplanguage.ui \
     formphplanguage.ui \
     gitmenu.ui \
@@ -66,3 +72,17 @@ RESOURCES += \
 
 DISTFILES += \
     DollarC_en_150.ts
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/lib64/release/ -lgit2
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/lib64/debug/ -lgit2
+else:unix: LIBS += -L$$PWD/../../../../../../usr/lib64/ -lgit2
+
+INCLUDEPATH += $$PWD/../../../../../../usr/lib64
+DEPENDPATH += $$PWD/../../../../../../usr/lib64
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../usr/lib64/release/ -lquazip1-qt5
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../usr/lib64/debug/ -lquazip1-qt5
+else:unix: LIBS += -L$$PWD/../../../../../../usr/lib64/ -lquazip1-qt5
+
+INCLUDEPATH += $$PWD/../../../../../../usr/include/QuaZip-Qt5-1.2/quazip
+DEPENDPATH += $$PWD/../../../../../../usr/include/QuaZip-Qt5-1.2/quazip

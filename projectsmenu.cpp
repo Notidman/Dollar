@@ -9,6 +9,12 @@
 #include <QMessageBox>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <git2/repository.h>
+#include <git2/errors.h>
+#include <git2/global.h>
+
+
+// Create func find all sub dir in json file and add it in CMake
 
 ProjectsMenu::ProjectsMenu(QWidget *parent) :
   QWidget(parent),
@@ -29,19 +35,20 @@ void ProjectsMenu::on_pb_reset_clicked()
 {
   ui->lEdit_project_name->clear();
   ui->lEdit_project_path->clear();
-  ui->lEdit_template_name->clear();
+  ui->lEdit_drc_way->clear();
 }
 
 void ProjectsMenu::on_pb_select_template_clicked()
 {
-  const QString file_name = QFileDialog::getOpenFileName(this, "Open file", dollar_writer->way_to_storage_templates(), "*.json");
-  ui->lEdit_template_name->setText(file_name);
+  const QString file_name = QFileDialog::getOpenFileName(this, "Open file", dollar_writer->way_to_storage_templates(), "*.drc");
+  ui->lEdit_drc_way->setText(file_name);
 }
 
 
 void ProjectsMenu::on_pb_select_path_clicked()
 {
-  const QString file_name = QFileDialog::getExistingDirectory(this, "Open Dir", QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+  const QString file_name = QFileDialog::getExistingDirectory(this, "Open Dir",
+                                                              QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
   ui->lEdit_project_path->setText(file_name);
 }
 
@@ -60,7 +67,7 @@ void ProjectsMenu::on_pb_create_clicked()
     return;
   }
 
-  if ( ui->lEdit_template_name->text().isEmpty() )
+  if ( ui->lEdit_drc_way->text().isEmpty() )
   {
     QMessageBox::warning(this, "Error", "Template name can't be empty!");
     return;
@@ -76,19 +83,40 @@ void ProjectsMenu::on_pb_create_clicked()
     qDebug() << "Created project dir!";
   }
 
-  QJsonObject json = dollar_writer->load_template(ui->lEdit_template_name->text()).object();
-  qDebug() << "Load json! " << json.value("name").toString();
+  dollar_writer->create_tmp_dir(ui->lEdit_drc_way->text());
 
-  if (json.value("language").toString() == "C++")
+  QJsonObject json = dollar_writer->load_metafile(dollar_writer->get_way_metafile()).object();
+  qDebug() << "Load json! " << json.value(jsonkeys::name).toString();
+
+  QString language_project = json.value(jsonkeys::language).toString();
+  if ( language_project == "C++")
   {
-    QString build_sys = json.value("build_system").toString();
+    QString build_sys = json.value(jsonkeys::build_system).toString();
     if ( build_sys == "CMake")
-      gen_cmake(way);
+      gen_cmake_cpp(way);
+  }
+  else if ( language_project == "C")
+  {
+    QString build_sys = json.value(jsonkeys::build_system).toString();
+    if ( build_sys == "CMake")
+      gen_cmake_c(way);
   }
 
-  create_project_struct(json.value("struct").toArray(), way);
+  if (json.value(jsonkeys::control_version).toString() == "Git")
+  {
+    gen_git(way);
+  }
+
+  create_project_struct(json.value(jsonkeys::struct_pj).toArray(), way);
 
   QMessageBox::about(this, "Success", "Project was be created");
+
+  dollar_writer->remove_tmp_dir();
+
+  // clear old data
+  ui->lEdit_project_name->setText("");
+  ui->lEdit_project_path->setText("");
+  ui->lEdit_drc_way->setText("");
 }
 
 void ProjectsMenu::create_project_struct(const QJsonArray& array, const QString& path)
@@ -101,29 +129,75 @@ void ProjectsMenu::create_project_struct(const QJsonArray& array, const QString&
 
 void ProjectsMenu::create_project_element(const QJsonObject& json, const QString& path)
 {
-  auto type = json.value("Type").toString();
-  auto name = json.value("Name").toString();
+  auto type = json.value(jsonkeys::struct_pj_type).toString();
+  auto name = json.value(jsonkeys::struct_pj_name).toString();
 
   if( type == map_type_file[TypeFile::Dir])
   {
     QDir dir(path);
     dir.mkdir(name);
-    create_project_struct(json.value("Children").toArray(), path + '/' + name);
+    create_project_struct(json.value(jsonkeys::struct_pj_childr).toArray(), path + '/' + name);
   }
   else if ( type == map_type_file[TypeFile::File])
   {
     QFile file(path + '/' + name);
     file.open(QFile::WriteOnly);
-    file.write(json.value("Children").toArray().at(0).toObject().value("Name").toString().toUtf8());
+    file.write(json.value(jsonkeys::struct_pj_childr).toArray()
+               .at(0).toObject().value(jsonkeys::struct_pj_name).toString().toUtf8());
     file.close();
+  }
+  else if ( type == map_type_file[TypeFile::ExternalFile])
+  {
+    QFile::copy(dollar_writer->way_tmp_dir() + '/' + name,
+                path + '/' + name);
   }
 }
 
-void ProjectsMenu::gen_cmake(const QString &path)
+void ProjectsMenu::gen_git(const QString &path)
+{
+   if ( git_libgit2_init() )
+   {
+     git_repository *rep = NULL;
+     int error = git_repository_init(&rep, path.toStdString().c_str(), false);
+     if (error < 0)
+     {
+       const git_error *e = git_error_last();
+       QMessageBox::critical(this, QString(error) + ' ' + QString(e->klass), e->message);
+       exit(error);
+     }
+   }
+   else
+   {
+     QMessageBox::critical(this, "Error", "Git init error!");
+   }
+}
+
+void ProjectsMenu::gen_cmake_c(const QString &path, const QStringList &libs)
 {
   QFile file_cmake(path + "/CMakeLists.txt");
   file_cmake.open(QFile::WriteOnly);
   file_cmake.write(QString(
+"cmake_minimum_required(VERSION 3.2)\n\
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n\
+project(" + ui->lEdit_project_name->text() + " LANGUAGES C)\n\
+set(CMAKE_C_STANDARD 18)\n\
+set(CMAKE_C_FLAGS \"${CMAKE_C_FLAGS} -std=c18 -Werror -Wall -Wextra -Wpedantic -fPIC -march=native -pthread -g\")\n\
+set(CMAKE_C_FLAGS_RELEASE \"-std=c18 -O2 -fPIC -march=native -pthread\")\n\
+include_directories(${DIR_FILES})\n\
+set(PROJECT_SOURCES_DIR ${DIR_FILES})\n\
+file(GLOB_RECURSE SOURCES ${PROJECT_SOURCES_DIR}/*.c)\n\
+add_executable(${PROJECT_NAME} ${SOURCES})"
+                     ).toUtf8()
+   );
+   qDebug() << "CMake created!";
+}
+
+void ProjectsMenu::gen_cmake_cpp(const QString &path, const QStringList& libs)
+{
+  QFile file_cmake(path + "/CMakeLists.txt");
+  file_cmake.open(QFile::WriteOnly);
+  file_cmake.write(
+        QString(
 "cmake_minimum_required(VERSION 3.2)\n\
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n\
 project(" + ui->lEdit_project_name->text() + " LANGUAGES CXX)\n\
@@ -133,8 +207,10 @@ set(CMAKE_CXX_FLAGS_RELEASE \"-std=c++20 -O2 -fPIC -march=native -pthread\")\n\
 include_directories(${DIR_FILES})\n\
 set(PROJECT_SOURCES_DIR ${DIR_FILES})\n\
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCES_DIR}/*.cpp)\n\
-add_executable(${PROJECT_NAME} ${SOURCES})\n").toUtf8());
-  qDebug() << "CMake created!";
+add_executable(${PROJECT_NAME} ${SOURCES})\n"
+        ).toUtf8()
+   );
+   qDebug() << "CMake created!";
 }
 
 //void TemplatesMenu::fill_tree(QTreeWidgetItem *item, const QJsonArray& array)

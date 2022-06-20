@@ -24,11 +24,20 @@
    <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>5</number>
-     </property>
      <property name="leftMargin">
       <number>5</number>
      </property>
@@ -53,6 +62,17 @@
          </property>
          <property name="text">
           <string>Select template</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="pb_remove_template">
+         <property name="text">
+          <string>Remove template</string>
          </property>
         </widget>
        </item>
@@ -126,7 +146,7 @@
          </item>
          <item>
           <property name="text">
-           <string>PHP</string>
+           <string>C</string>
           </property>
          </item>
         </widget>
@@ -135,6 +155,24 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_language_form"/>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="lb_version_control">
+         <property name="text">
+          <string>Control version:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="rb_version_control_git">
+         <property name="text">
+          <string>Git</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -177,6 +215,13 @@
           <widget class="QPushButton" name="pb_create_file">
            <property name="text">
             <string>Create File</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_load_file">
+           <property name="text">
+            <string>Load File</string>
            </property>
           </widget>
          </item>

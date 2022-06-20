@@ -29,7 +29,9 @@ private:
   void create_project_struct(const QJsonArray &array, const QString &path);
   void create_project_element(const QJsonObject &json, const QString &path);
   void gen_make(const QString& path);
-  void gen_cmake(const QString& path);
+  void gen_cmake_cpp(const QString& path, const QStringList& libs);
+  void gen_cmake_c(const QString& path, const QStringList& libs);
+  void gen_git(const QString& path);
 
 private:
   DollarWriter* dollar_writer;
